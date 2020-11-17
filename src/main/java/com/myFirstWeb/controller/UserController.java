@@ -26,7 +26,7 @@ public class UserController {
         if(user == null) {
             return false;
         }
-
+        UpdateTime(user.getId());
         return user.getPassword().equals(password);
     }
 

@@ -15,34 +15,36 @@ import com.myFirstWeb.bean.*;
 import com.myFirstWeb.controller.*;
 import java.util.ArrayList;
 
-public class AddShoppingCart extends HttpServlet {
+public class RemoveShoppingCart extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
         if(user == null) {
             resp.sendRedirect("/login");
             return;
         }
         try {
-            String num_str = req.getParameter("num");
-            String pid_str = req.getParameter("pid");
-            if(num_str == null || pid_str == null) {
-                resp.sendRedirect("/index");
+            String sid_str = req.getParameter("sid");
+            if(sid_str == null) {
+                resp.sendRedirect("/shoppingcart");
+                return;
             }
-            int num = Integer.parseInt(num_str);
-            long pid = Long.parseLong(pid_str);
-            OrderController.InsertShoppingCartRecord(user.getId(), pid, num);
+            long sid = Long.parseLong(sid_str);
+            OrderController.RemoveShoppingCartRecord(sid);
             resp.sendRedirect("/shoppingcart");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
+
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.doGet(req, resp);
+
     }
 
 }

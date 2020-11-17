@@ -32,7 +32,7 @@ public class OrderController {
         shopping.setNum(num);
         shopping.setUid(uid);
         shopping.setPid(pid);
-        shopping.setStatus(2);
+        shopping.setStatus(3);
         DatabaseController.InsertShoppingCartRecord(shopping);
         return 1;
     }
@@ -48,6 +48,10 @@ public class OrderController {
         }
         DatabaseController.UpdateShoppingCartNum(sid, num);
         return 1;
+    }
+
+    public static void UpdateShoppingCartStatus(long sid, int status)throws SQLException, ClassNotFoundException {
+        DatabaseController.UpdateShoppingCartStatus(sid, status);
     }
 
     public static void RemoveShoppingCartRecord(long sid)throws SQLException,ClassNotFoundException {
@@ -84,6 +88,18 @@ public class OrderController {
         return DatabaseController.GetViewRecords(uid, num, page);
     }
 
+    public static ArrayList<Records_shopping_cart> GetShoppingCartRecords(long uid, int num, int page)throws SQLException, ClassNotFoundException {
+        return DatabaseController.GetShoppingCartRecords(uid, num, page);
+    }
+
+    public static int CountShoppingCartRecords(long uid)throws SQLException, ClassNotFoundException {
+        return DatabaseController.CountShoppingCartRecords(uid);
+    }
+
+    public static ArrayList<Records_shopping_cart> GetOrders(long uid) throws SQLException,ClassNotFoundException  {
+        return DatabaseController.GetTickShoppingCartRecords(uid);
+
+    }
 
 
 }

@@ -15,7 +15,12 @@ import com.myFirstWeb.bean.*;
 import com.myFirstWeb.controller.*;
 import java.util.ArrayList;
 
-public class AddShoppingCart extends HttpServlet {
+public class UpdateShoppingNum extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doPost(req, resp);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
@@ -24,25 +29,21 @@ public class AddShoppingCart extends HttpServlet {
             return;
         }
         try {
+            String sid_str = req.getParameter("sid");
             String num_str = req.getParameter("num");
-            String pid_str = req.getParameter("pid");
-            if(num_str == null || pid_str == null) {
-                resp.sendRedirect("/index");
+            if(sid_str == null || num_str == null) {
+                resp.sendRedirect("/shoppingcart");
+                return;
             }
+            long sid = Long.parseLong(sid_str);
             int num = Integer.parseInt(num_str);
-            long pid = Long.parseLong(pid_str);
-            OrderController.InsertShoppingCartRecord(user.getId(), pid, num);
+            OrderController.UpdateShoppingNum(sid, num);
             resp.sendRedirect("/shoppingcart");
+
         } catch (Exception e) {
             e.printStackTrace();
+
         }
-
-
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.doGet(req, resp);
     }
 
 }

@@ -73,8 +73,9 @@ import com.myFirstWeb.bean.*;
  * num(int)
  * status(int)
  * --0:remove
- * --1:off/had sol
- * --2:on
+ * --1:off shelf/had sol
+ * --2:off
+ * --3:on
  * */
 
 public class DatabaseController {
@@ -597,6 +598,29 @@ public class DatabaseController {
                         trades.add(trade);
                     }
                     return trades;
+                }
+            }
+        }
+    }
+
+    public static ArrayList<Records_shopping_cart> GetTickShoppingCartRecords(long uid)throws SQLException,ClassNotFoundException {
+        Class.forName(JDBC_URL);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select sid, uid, pid, num, status from records_shopping_cart where status = 3 and uid=?")) {
+                ps.setObject(1, uid);
+                try(ResultSet rs = ps.executeQuery()) {
+                    ArrayList<Records_shopping_cart> shoppings = new ArrayList<Records_shopping_cart>();
+                    while(rs.next()) {
+                        Records_shopping_cart shopping = new Records_shopping_cart();
+                        shopping.setNum(rs.getInt("int"));
+                        shopping.setSid(rs.getLong("sid"));
+                        shopping.setUid(rs.getLong("uid"));
+                        shopping.setPid(rs.getLong("pid"));
+                        shopping.setStatus(rs.getInt("status"));
+                        shoppings.add(shopping);
+                    }
+                    return shoppings;
+
                 }
             }
         }

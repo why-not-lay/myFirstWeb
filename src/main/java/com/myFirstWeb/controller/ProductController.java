@@ -86,4 +86,8 @@ public class ProductController {
         return 1;
     }
 
+    public static void UpdateProduct(Product product)throws SQLException,ClassNotFoundException {
+        DatabaseController.UpdateProduct(product);
+    }
+
 }
