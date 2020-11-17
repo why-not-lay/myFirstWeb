@@ -42,7 +42,7 @@ public class AddProduct extends HttpServlet {
                     product.setName(product_name);
                     product.setDescription(product_description);
                     product.setUid(user.getId());
-                    ProductController.Insert(product);
+                    ProductController.InsertProduct(product);
                     resp.sendRedirect("/seller");
 
                 } catch (Exception e) {

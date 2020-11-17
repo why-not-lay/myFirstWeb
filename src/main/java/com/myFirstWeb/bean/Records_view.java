@@ -2,10 +2,19 @@ package com.myFirstWeb.bean;
 import java.util.Date;
 
 public class Records_view {
+    private long vid;
     private long uid;
     private long pid;
     private Date date;
     private int status;
+
+    public void setVid(long vid) {
+        this.vid = vid;
+    }
+
+    public long getVid() {
+        return vid;
+    }
 
     public void setUid(long uid) {
         this.uid = uid;

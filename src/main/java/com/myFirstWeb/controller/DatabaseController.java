@@ -41,6 +41,7 @@ import com.myFirstWeb.bean.*;
 
 /**
  * records_trade:
+ * tid(bigint)
  * pid(bigint)
  * uid_buyer(bigint)
  * uid_seller(bigint)
@@ -48,22 +49,32 @@ import com.myFirstWeb.bean.*;
  * date_trade(date)
  * cost(int)
  * status(int)
+ * --0:remove
+ * --1:successful
+ * --2:return
  * */
 
 /**
  * records_view:
+ * vid(bigint)
  * uid(bigint)
  * pid(bigint)
  * date_view(date)
  * status(int)
+ * --0:remove
+ * --1:successful
  * */
 
 /**
  * records_shopping_cart:
+ * sid(bigint)
  * uid(bigint)
  * pid(bigint)
  * num(int)
  * status(int)
+ * --0:remove
+ * --1:off/had sol
+ * --2:on
  * */
 
 public class DatabaseController {
@@ -113,13 +124,12 @@ public class DatabaseController {
         }
     }
 
-    public static void RemoveTradeRecord(long uid, long pid) throws SQLException,ClassNotFoundException{
+    public static void RemoveTradeRecord(long tid) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("update into records_trade set status=? where uid=? and pid=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("update into records_trade set status=? where sid=?")) {
                 ps.setObject(1, 0);
-                ps.setObject(2, uid);
-                ps.setObject(3, pid);
+                ps.setObject(2, tid);
                 ps.executeUpdate();
 
             }
@@ -193,13 +203,12 @@ public class DatabaseController {
 
     }
 
-    public static void RemoveViewRecord(long uid, long pid) throws SQLException,ClassNotFoundException{
+    public static void RemoveViewRecord(long vid) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("update records_view set status=? where uid=? and pid=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("update records_view set status=? where sid=?")) {
                 ps.setObject(1, 0);
-                ps.setObject(2, uid);
-                ps.setObject(3, pid);
+                ps.setObject(2, vid);
                 ps.executeUpdate();
             }
 
@@ -357,7 +366,7 @@ public class DatabaseController {
         }
     }
 
-    public static void InsertRecordShoppingCart(Records_shopping_cart record)throws SQLException, ClassNotFoundException {
+    public static void InsertShoppingCartRecord(Records_shopping_cart record)throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
             try (PreparedStatement ps = conn.prepareStatement("Insert into records_shopping_cart (uid,pid,num,status) values (?,?,?,?)")) {
@@ -371,10 +380,10 @@ public class DatabaseController {
         }
     }
 
-    public static ArrayList<Records_shopping_cart> GetRecordsShoppingCart(long uid, int num, int page) throws SQLException, ClassNotFoundException {
+    public static ArrayList<Records_shopping_cart> GetShoppingCartRecords(long uid, int num, int page) throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select uid, pid, num, status from records_shopping_cart where status > 0 and uid=? limit ?,?")) {
+            try(PreparedStatement ps = conn.prepareStatement("select sid,uid, pid, num, status from records_shopping_cart where status > 0 and uid=? limit ?,?")) {
                 ps.setObject(1, uid);
                 ps.setObject(2, page);
                 ps.setObject(3, num);
@@ -382,6 +391,7 @@ public class DatabaseController {
                     ArrayList<Records_shopping_cart> records = new ArrayList<Records_shopping_cart>();
                     while(rs.next()) {
                         Records_shopping_cart record = new Records_shopping_cart();
+                        record.setSid(rs.getLong("sid"));
                         record.setUid(rs.getLong("uid"));
                         record.setPid(rs.getLong("pid"));
                         record.setNum(rs.getInt("num"));
@@ -394,30 +404,42 @@ public class DatabaseController {
         }
     }
 
-    public static void UpdateRecordsShoppingCartNum(long uid, long pid, long num)throws SQLException, ClassNotFoundException {
+    public static void UpdateShoppingCartNum(long sid, int num)throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("update records_shopping_cart set num=? where uid=? and pid=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("update records_shopping_cart set num=? where sid=?")) {
                 ps.setObject(1, num);
-                ps.setObject(2, uid);
-                ps.setObject(3, pid);
+                ps.setObject(2, sid);
                 ps.executeUpdate();
             }
         }
 
     }
 
-    public static void RemoveRecordShoppingCart(long uid, long pid)throws SQLException,ClassNotFoundException {
+    public static void UpdateShoppingCartStatus(long sid, int status)throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("update records_shopping_cart set status=0 where uid=? and pid=?")) {
-                ps.setObject(1, uid);
-                ps.setObject(2, pid);
+            try(PreparedStatement ps = conn.prepareStatement("update records_shopping_cart set status=? where sid=?")) {
+                ps.setObject(1, status);
+                ps.setObject(2, sid);
                 ps.executeUpdate();
             }
         }
 
     }
+
+    public static void RemoveShoppingCartRecord(long sid)throws SQLException,ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("update records_shopping_cart set status=? where sid=?")) {
+                ps.setObject(1, 0);
+                ps.setObject(2, sid);
+                ps.executeUpdate();
+            }
+        }
+
+    }
+
 
     public static int CountProducts()throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
@@ -451,7 +473,7 @@ public class DatabaseController {
         }
     }
 
-    public static int CountRecordsShoppingCart(long uid)throws SQLException, ClassNotFoundException {
+    public static int CountShoppingCartRecords(long uid)throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
             try(PreparedStatement ps = conn.prepareStatement("select count(*) from records_shopping_cart where status > 0 and uid=?")) {
@@ -462,6 +484,119 @@ public class DatabaseController {
                     } else {
                         return -1;
                     }
+                }
+            }
+        }
+
+    }
+
+    public static Records_shopping_cart SearchShoppingCartRecord(long sid)throws SQLException, ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select sid,uid,pid,num,status from records_shopping_cart where status>0 and sid=?")) {
+                ps.setObject(1, sid);
+                try(ResultSet rs = ps.executeQuery()) {
+                    Records_shopping_cart shopping = null;
+                    if(rs.next()) {
+                        shopping = new Records_shopping_cart();
+                        shopping.setSid(sid);
+                        shopping.setNum(rs.getInt("num"));
+                        shopping.setPid(rs.getLong("pid"));
+                        shopping.setUid(rs.getLong("uid"));
+                        shopping.setStatus(rs.getInt("status"));
+                    }
+                    return shopping;
+                }
+
+            }
+        }
+
+    }
+
+    public static ArrayList<Records_shopping_cart> GetShoppingCartRecords(long pid)throws SQLException,ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select sid,uid,pid,num,status from records_shopping_cart where pid=? and status > 0")) {
+                ps.setObject(1, pid);
+                try(ResultSet rs = ps.executeQuery()) {
+                    ArrayList<Records_shopping_cart> shoppings = new ArrayList<Records_shopping_cart>();
+                    while(rs.next()) {
+                        Records_shopping_cart shopping = new Records_shopping_cart();
+                        shopping.setPid(pid);
+                        shopping.setSid(rs.getLong("sid"));
+                        shopping.setUid(rs.getLong("uid"));
+                        shopping.setNum(rs.getInt("num"));
+                        shopping.setStatus(rs.getInt("status"));
+                        shoppings.add(shopping);
+                    }
+                    return shoppings;
+
+                }
+
+            }
+        }
+
+    }
+
+    public static void UpdateUser(User user)throws SQLException, ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("update users set email=? ,date_login=? where uid=?")) {
+                ps.setObject(1, user.getEmail());
+                ps.setObject(2, user.getDate_login());
+                ps.setObject(3, user.getId());
+                ps.executeUpdate();
+            }
+        }
+
+    }
+
+    public static ArrayList<Records_view> GetViewRecords(long uid,int num, int page)throws SQLException,ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select vid, uid, pid, date, status from records_view where status > 0 and uid=? limit ?,?")) {
+                ps.setObject(1, uid);
+                ps.setObject(2, page);
+                ps.setObject(3, num);
+                try(ResultSet rs = ps.executeQuery()) {
+                    ArrayList<Records_view> views = new ArrayList<Records_view>();
+                    while(rs.next()) {
+                        Records_view view= new Records_view();
+                        view.setPid(rs.getLong("pid"));
+                        view.setUid(rs.getLong("uid"));
+                        view.setVid(rs.getLong("vid"));
+                        view.setDate(rs.getDate("date"));
+                        view.setStatus(rs.getInt("status"));
+                        views.add(view);
+                    }
+                    return views;
+                }
+            }
+        }
+    }
+
+    public static ArrayList<Records_trade> GetTradeRecords(long uid, int num, int page)throws SQLException,ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select tid, pid, uid_buyer,uid_seller,num,date_trade, cost, status from records_trade where status > 0 ans uid=? limit ?,?")) {
+                ps.setObject(1, uid);
+                ps.setObject(2, page);
+                ps.setObject(3, num);
+                try(ResultSet rs = ps.executeQuery()) {
+                    ArrayList<Records_trade> trades  = new ArrayList<Records_trade>();
+                    while(rs.next()) {
+                        Records_trade trade = new Records_trade();
+                        trade.setNum(rs.getInt("num"));
+                        trade.setTid(rs.getLong("tid"));
+                        trade.setPid(rs.getLong("pid"));
+                        trade.setUid_buyer(rs.getLong("uid_buyer"));
+                        trade.setUid_seller(rs.getLong("uid_seller"));
+                        trade.setDate_trade(rs.getDate("date_trade"));
+                        trade.setCost(rs.getInt("cost"));
+                        trade.setStatus(rs.getInt("status"));
+                        trades.add(trade);
+                    }
+                    return trades;
                 }
             }
         }

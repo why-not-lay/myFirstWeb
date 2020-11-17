@@ -1,22 +1,19 @@
 package com.myFirstWeb.controller;
 
-import java.util.HashMap;
 import java.sql.SQLException;
-import java.util.Date;
 //import java.util.List;
 import java.util.ArrayList;
-import com.myFirstWeb.bean.Product;
-import com.myFirstWeb.bean.User;
+import com.myFirstWeb.bean.*;
 import com.myFirstWeb.controller.DatabaseController;
 
 public class ProductController {
 
-    public static void Insert(Product product)throws SQLException,ClassNotFoundException{
+    public static void InsertProduct(Product product)throws SQLException,ClassNotFoundException{
         product.setStatus(3);
         DatabaseController.InsertProduct(product);
     }
 
-    public static Product Search(long pid)throws SQLException,ClassNotFoundException{
+    public static Product SearchProduct(long pid)throws SQLException,ClassNotFoundException{
         return DatabaseController.SearchProduct(pid);
     }
 
@@ -25,6 +22,10 @@ public class ProductController {
     }
 
     public static void Remove(long pid)throws SQLException,ClassNotFoundException{
+        ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecords(pid);
+        for (Records_shopping_cart shopping : shoppings) {
+            DatabaseController.UpdateShoppingCartStatus(shopping.getSid(), 1);
+        }
         DatabaseController.RemoveProduct(pid);
     }
 
@@ -40,35 +41,49 @@ public class ProductController {
         return DatabaseController.CountSellerProducts(uid);
     }
 
-    public static int BuyProduct(long pid)throws SQLException,ClassNotFoundException {
+    public static int OnShelfProduct(long pid)throws SQLException,ClassNotFoundException {
         Product product = DatabaseController.SearchProduct(pid);
-        if(product==null ) {
-            return -2;
+        if(product == null || product.getNum() == 0) {
+            return 0;
         }
-        if(product.getNum() == 0) {
-            return -1;
-        }
-        product.setNum(product.getNum()-1);
+        product.setStatus(3);
         DatabaseController.UpdateProduct(product);
-        return product.getPrice();
+        return 1;
     }
 
-    public static void BuyProducts(ArrayList<Long> products)throws SQLException, ClassNotFoundException {
-
-        // dozens of product in :  <16-11-20, yourname> //
-
-    }
-
-    public static void OffShelfProduct(long pid)throws SQLException, ClassNotFoundException {
+    public static int OffShelfProduct(long pid)throws SQLException, ClassNotFoundException {
         Product product = DatabaseController.SearchProduct(pid);
         if(product == null) {
-            return;
+            return 0;
+        }
+        ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecords(pid);
+        for (Records_shopping_cart shopping : shoppings) {
+            DatabaseController.UpdateShoppingCartStatus(shopping.getSid(), 1);
         }
         product.setStatus(1);
         DatabaseController.UpdateProduct(product);
+        return 1;
     }
 
-    public static void View()throws SQLException, ClassNotFoundException {
+    public static int BuyProduct(long pid, int num) throws SQLException,ClassNotFoundException{
+        Product product = DatabaseController.GetProduct(pid);
+        if(product == null || product.getNum() < num) {
+            return 0;
+        }
 
+        product.setNum(product.getNum()-num);
+        ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecords(pid);
+        for (Records_shopping_cart shopping : shoppings) {
+            if(shopping.getNum() > product.getNum()) {
+                DatabaseController.UpdateShoppingCartNum(shopping.getSid(),1);
+            }
+        }
+
+        if(product.getNum() == 0) {
+            product.setStatus(2);
+            DatabaseController.UpdateProduct(product);
+        }
+        return 1;
     }
+
 }

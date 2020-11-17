@@ -1,10 +1,19 @@
 package com.myFirstWeb.bean;
 public class Records_shopping_cart {
 
+    private long sid;
     private long uid;
     private long pid;
     private int num;
     private int status;
+
+    public void setSid(long sid) {
+        this.sid = sid;
+    }
+
+    public long getSid() {
+        return sid;
+    }
 
     public void setUid(long uid) {
         this.uid = uid;

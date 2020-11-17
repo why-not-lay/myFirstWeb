@@ -1,6 +1,7 @@
 package com.myFirstWeb.bean;
 import java.util.Date;
 public class Records_trade {
+    private long tid;
     private long pid;
     private long uid_buyer;
     private long uid_seller;
@@ -8,6 +9,14 @@ public class Records_trade {
     private Date date_trade;
     private int cost;
     private int status;
+
+    public long getTid() {
+        return tid;
+    }
+
+    public void setTid(long tid) {
+        this.tid = tid;
+    }
 
     public int getNum() {
         return num;

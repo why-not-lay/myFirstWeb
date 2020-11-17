@@ -41,4 +41,13 @@ public class UserController {
         DatabaseController.InsertUser(user);
     }
 
+    public static void UpdateTime(long uid)throws SQLException, ClassNotFoundException {
+        User user = Search(uid);
+        if(user == null) {
+            return;
+        }
+        user.setDate_login(new Date());
+        DatabaseController.UpdateUser(user);
+    }
+
 }
