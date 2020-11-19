@@ -25,6 +25,12 @@ public class Buy extends HttpServlet {
         }
         try {
             ArrayList<Records_shopping_cart> shoppings = OrderController.GetOrders(user.getId());
+
+            if(shoppings.size()==0) {
+                resp.sendRedirect("/shopping");
+                return;
+            }
+
             ArrayList<Product> products = new ArrayList<Product>();
             int cost_price = 0;
             for (Records_shopping_cart shopping : shoppings) {
