@@ -19,7 +19,7 @@ public class ConfirmBuy extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
-        ArrayList<Product> products_buy = (ArrayList<Product>)req.getSession().getAttribute("products_buy");
+        ArrayList<Product> products_buy = null;//(ArrayList<Product>)req.getSession().getAttribute("products_buy");
         Integer cost_price = (Integer)req.getSession().getAttribute("cost_price");
         if(user == null) {
             resp.sendRedirect("/login");

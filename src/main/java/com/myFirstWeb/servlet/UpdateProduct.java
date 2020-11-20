@@ -44,7 +44,7 @@ public class UpdateProduct extends HttpServlet {
                 resp.sendRedirect("/seller");
                 return;
             }
-            String product_name = req.getRealPath("product_name");
+            String product_name = req.getParameter("product_name");
             String product_num = req.getParameter("product_num");
             String product_price = req.getParameter("product_price");
             String product_description = req.getParameter("product_description");

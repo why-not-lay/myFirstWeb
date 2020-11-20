@@ -52,9 +52,49 @@
     <servlet-name>User</servlet-name>
     <servlet-class>com.myFirstWeb.servlet.Userpage</servlet-class>
   </servlet>
-  
-  
+  <servlet>
+    <description></description>
+    <display-name>Item</display-name>
+    <servlet-name>Item</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.Item</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>UpdateProduct</display-name>
+    <servlet-name>UpdateProduct</servlet-name>
+    <servlet-class>com.myfirstweb.servlet.UpdateProduct</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>Offshelf</display-name>
+    <servlet-name>Offshelf</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.Offshelf</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>Onshelf</display-name>
+    <servlet-name>Onshelf</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.Onshelf</servlet-class>
+  </servlet>
 
+  
+  
+  
+  
+  
+  
+  <servlet-mapping>
+    <servlet-name>UpdateProduct</servlet-name>
+    <url-pattern>/seller/update</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>Offshelf</servlet-name>
+      <url-pattern>/offshelf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>Onshelf</servlet-name>
+      <url-pattern>/onshelf</url-pattern>
+    </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Seller</servlet-name>
     <url-pattern>/seller</url-pattern>
@@ -70,6 +110,10 @@
   <servlet-mapping>
     <servlet-name>User</servlet-name>
     <url-pattern>/user</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Item</servlet-name>
+    <url-pattern>/item</url-pattern>
   </servlet-mapping>
   
 

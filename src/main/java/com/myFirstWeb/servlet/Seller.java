@@ -24,16 +24,36 @@ public class Seller extends HttpServlet {
             resp.sendRedirect("/login");
         } else {
             try {
-                String str_page = req.getParameter("page");
-                int page = 0;
-                Integer all = ProductController.CountSellerProducts(user.getId());
-                if(str_page != null) {
-                    page = Integer.parseInt(str_page);
+                String page_onshlf_str= req.getParameter("page_onshlf");
+                String page_offshelf_str = req.getParameter("page_offshelf");
+                String page_soldout_str = req.getParameter("page_soldout");
+
+                Integer page_onshlf = 0;
+                Integer page_offshelf = 0;
+                Integer page_soldout = 0;
+
+                Integer sum_onshelf = ProductController.CountSellerOnShelfProducts(user.getId());
+                Integer sum_offshelf = ProductController.CountSellerOffShelfProducts(user.getId());
+                Integer sum_soldout = ProductController.CountSellerSoldOutProducts(user.getId());
+
+                ArrayList<Product> products_onshelf = ProductController.GetSellerOnShelfProducts(user.getId(), 10, page_onshlf);
+                ArrayList<Product> products_offshelf = ProductController.GetSellerOffShelfProducts(user.getId(), 10, page_offshelf);
+                ArrayList<Product> products_soldout = ProductController.GetSellerSoldOutProducts(user.getId(), 10, page_soldout);
+
+                if(page_onshlf_str != null && page_offshelf_str != null && page_soldout_str != null) {
+                    page_onshlf = Integer.parseInt(page_onshlf_str);
+                    page_offshelf = Integer.parseInt(page_offshelf_str);
+                    page_soldout = Integer.parseInt(page_soldout_str);
                 }
-                ArrayList<Product> products = ProductController.GetSellerProducts(user.getId(),10,page);
-                req.setAttribute("products",products);
-                req.setAttribute("user",user);
-                req.setAttribute("all",all);
+
+                req.setAttribute("products_onshelf", products_onshelf);
+                req.setAttribute("products_offshelf", products_offshelf);
+                req.setAttribute("products_soldout", products_soldout);
+
+                req.setAttribute("sum_onshelf", sum_onshelf);
+                req.setAttribute("sum_offshelf", sum_offshelf);
+                req.setAttribute("sum_soldout", sum_soldout);
+
                 req.getRequestDispatcher("jsp/seller.jsp").forward(req,resp);
 
             } catch (Exception e) {

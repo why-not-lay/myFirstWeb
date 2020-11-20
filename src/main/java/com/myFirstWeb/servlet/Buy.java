@@ -24,7 +24,7 @@ public class Buy extends HttpServlet {
             return;
         }
         try {
-            ArrayList<Records_shopping_cart> shoppings = OrderController.GetOrders(user.getId());
+            ArrayList<Records_shopping_cart> shoppings = OrderController.GetSelected(user.getId());
 
             if(shoppings.size()==0) {
                 resp.sendRedirect("/shopping");

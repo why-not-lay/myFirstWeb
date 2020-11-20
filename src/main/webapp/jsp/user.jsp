@@ -2,29 +2,34 @@
 <%@ page import="com.myFirstWeb.bean.*" %>
 <%@ page import="java.util.ArrayList" %>
 <% 
-  //User user = (User)request.getAttribute("user"); 
   User user = (User)request.getSession().getAttribute("user");
-  User new_user = (User)request.getAttribute("new_user");
+
   ArrayList<Product> products = (ArrayList<Product>)request.getAttribute("products");
-  Integer all = (Integer)request.getAttribute("all");
-  
+  ArrayList<Records_view> views = (ArrayList<Records_view>)request.getAttribute("views");
+  ArrayList<Records_trade> trades = (ArrayList<Records_trade>)request.getAttribute("trades");
+
+  ArrayList<Product> products_view = (ArrayList<Product>)request.getAttribute("products_view");
+  ArrayList<Product> products_trade = (ArrayList<Product>)request.getAttribute("products_trade");
+
+  Integer page_sum_views = (Integer)request.getAttribute("page_sum_views");
+  Integer page_sum_trades= (Integer)request.getAttribute("page_sum_trades");
+  Integer page_sum_products= (Integer)request.getAttribute("page_sum_products");
 %>
 <html>
   <body>
     <a href="/index" >返回</a>
     <a href="/seller" >我要卖</a>
     <a href="#" >购物车</a>
-    <% if(user == null){ %>
-      <a href="/login" >登录</a>
+    <% if(user == null){ %> <a href="/login" >登录</a>
     <%} else {%>
       <a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a>
     <%}%>
     
     <h3>个人信息</h3>
-    用户名:<div><%=new_user.getName()%></div>
-    邮箱:<div><%=new_user.getEmail()%></div>
+    用户名:<div><%=user.getName()%></div>
+    邮箱:<div><%=user.getEmail()%></div>
     <h3>个人商品</h3>
-    <% if(products == null){ %>
+    <% if(products == null || products.size() == 0){ %>
     <div>当前没有商品</div>
     <%} else {%>
       <%for (int i = 0; i < products.size(); i++){%>
@@ -35,24 +40,74 @@
       <div><% out.println(product.getDescription());%></div>
       <div><% out.println(product.getPrice());%></div>
       <div><% out.println(product.getNum());%></div>
+      <a href="/item?pid=<%=product.getId()%>">link</a>
       <div>==========================================================</div>
     </div>
       <%}%>
-      <% if(all == null){ %>
-        <a href="/user?uid=<%=new_user.getId()%>&page=0" >1</a>
+      <% if(page_sum_products == null){ %>
+        <a href="/user?uid=<%=new_user.getId()%>&page_products=0" >1</a>
       <%} else {%>
-        <% int all_page = all/10; %>
+        <% int all_page = page_sum_products/10; %>
         <%for (int i = 0; i <= all_page; i++){%>
-          <a href="/user?uid=<%=new_user.getId()%>&page=<%=i%>" ><%=i+1%></a>
+          <a href="/user?uid=<%=new_user.getId()%>&page_products=<%=i%>" ><%=i+1%></a>
         <%}%>
       <%}%>
     <%}%>
-    
-    
-    <% if(user != null && user.equals(new_user)){ %>
-      <h3>浏览记录</h3>
-      <h3>购买记录</h3>
+
+
+    <h3>浏览商品</h3>
+    <% if(products_view == null || products_view.size() == 0){ %>
+    <div>没有浏览过的商品</div>
+    <%} else {%>
+      <%for (int i = 0; i < products_view.size(); i++){%>
+    <div>
+      <div>==========================================================</div>
+      <%Records_view view = views.get(i)%>
+      <%Product product = products_view.get(i)%>
+      <div><%=product.getName()%></div>
+      <div><%=product.getPrice()%></div>
+      <div><%=view.getDate()%></div>
+      <a href="/item?pid=<%=product.getId()%>">link</a>
+      <div>==========================================================</div>
+    </div>
+      <%}%>
+      <% if(page_sum_views == null){ %>
+        <a href="/user?uid=<%=new_user.getId()%>&page_views=0" >1</a>
+      <%} else {%>
+        <% int all_page = page_sum_views/10; %>
+        <%for (int i = 0; i <= all_page; i++){%>
+          <a href="/user?uid=<%=new_user.getId()%>&page_views=<%=i%>" ><%=i+1%></a>
+        <%}%>
+      <%}%>
     <%}%>
-    
+
+    <h3>购买记录</h3>
+    <% if(products_trade == null || products_trade.size() == 0){ %>
+    <div>没有购买过的商品</div>
+    <%} else {%>
+      <%for (int i = 0; i < products_trade.size(); i++){%>
+    <div>
+      <div>==========================================================</div>
+      <%Records_trade trade = trades.get(i)%>
+      <%Product product = products_trade.get(i)%>
+      <div><%=product.getName()%></div>
+      <div><%=product.getPrice()%></div>
+      <div><%=trades.getNum()%></div>
+      <div><%=trades.getCost()%></div>
+      <a href="/item?pid=<%=product.getId()%>">link</a>
+      <div>==========================================================</div>
+    </div>
+      <%}%>
+      <% if(page_sum_trades == null){ %>
+        <a href="/user?uid=<%=new_user.getId()%>&page_trades=0" >1</a>
+      <%} else {%>
+        <% int all_page = page_sum_trades/10; %>
+        <%for (int i = 0; i <= all_page; i++){%>
+          <a href="/user?uid=<%=new_user.getId()%>&page_trades=<%=i%>" ><%=i+1%></a>
+        <%}%>
+      <%}%>
+    <%}%>
+
+
   </body>
 </html>

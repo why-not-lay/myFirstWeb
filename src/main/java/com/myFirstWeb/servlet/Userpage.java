@@ -21,34 +21,40 @@ public class Userpage extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             User user = (User)req.getSession().getAttribute("user");
-            String uid_str = req.getParameter("uid");
-            String page_str = req.getParameter("page");
-            Long uid = null;
-            int page = 0;
-            if(uid_str != null) {
-                uid = Long.parseLong(uid_str);
+            String page_products_str = req.getParameter("page_products");
+            String page_views_str = req.getParameter("page_views");
+            String page_trades_str = req.getParameter("page_trades");
+
+            if(user == null) {
+                resp.sendRedirect("/login");
             }
-            if(page_str != null) {
-                page = Integer.parseInt(page_str);
-            }
-            User new_user = null;
-            ArrayList<Product> products = null;
-            Integer all = null;
-            if(uid != null) {
-                new_user = UserController.Search(uid);
-                products = ProductController.GetSellerProducts(new_user.getId(),10,page);
-                all = ProductController.CountSellerProducts(uid);
+            int page_products = 0, page_views = 0, page_trades = 0;
+            if(page_products_str != null && page_views_str != null && page_trades_str != null) {
+                page_products = Integer.parseInt(page_products_str);
+                page_views = Integer.parseInt(page_views_str);
+                page_trades = Integer.parseInt(page_trades_str);
             }
 
-            if(new_user == null) {
-                resp.sendRedirect("/index");
-            } else {
-                req.setAttribute("user",user);
-                req.setAttribute("new_user", new_user);
-                req.setAttribute("products",products);
-                req.setAttribute("all", all);
-                req.getRequestDispatcher("jsp/user.jsp").forward(req, resp);
-            }
+            ArrayList<Product> products = ProductController.GetSellerOnShelfProducts(user.getId(), 10, page_products);
+            ArrayList<Records_view> views = OrderController.GetViewRecords(user.getId(), 10, page_views);
+            ArrayList<Records_trade> trades = OrderController.GetTradeRecords(user.getId(), 10, page_trades);
+
+            ArrayList<Product> products_view = OrderController.GetViewRecordProducts(user.getId(), 10, page_views);
+            ArrayList<Product> products_trade = OrderController.GetTradeRecordProducts(user.getId(), 10, page_trades);
+
+            Integer page_sum_products = ProductController.CountSellerOnShelfProducts(user.getId());
+            Integer page_sum_views = OrderController.CountViewRecords(user.getId());
+            Integer page_sum_trades = OrderController.CountTradeRecords(user.getId());
+
+            req.setAttribute("products", products);
+            req.setAttribute("page_sum_products", page_sum_products);
+            req.setAttribute("views", views);
+            req.setAttribute("products_view", products_view);
+            req.setAttribute("page_sum_views", page_sum_views);
+            req.setAttribute("trades", trades);
+            req.setAttribute("products_trade", products_trade);
+            req.setAttribute("page_sum_trades", page_sum_trades);
+            req.getRequestDispatcher("jsp/user.jsp").forward(req, resp);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -8,9 +8,10 @@ import com.myFirstWeb.controller.DatabaseController;
 
 public class ProductController {
 
-    public static void InsertProduct(Product product)throws SQLException,ClassNotFoundException{
+    public static int InsertProduct(Product product)throws SQLException,ClassNotFoundException{
         product.setStatus(Status.Status_products.ON_SHELF);
         DatabaseController.InsertProduct(product);
+        return Status.Status_situation.SUCCESSFUL;
     }
 
     public static Product SearchProduct(long pid)throws SQLException,ClassNotFoundException{
@@ -81,29 +82,9 @@ public class ProductController {
         return Status.Status_situation.SUCCESSFUL;
     }
 
-//    public static int BuyProduct(long pid, int num) throws SQLException,ClassNotFoundException{
-//        Product product = DatabaseController.GetProduct(pid);
-//        if(product == null || product.getNum() < num) {
-//            return Status.Status_situation.NOT_EXIST;
-//        }
-//
-//        product.setNum(product.getNum()-num);
-//        ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecords(pid);
-//        for (Records_shopping_cart shopping : shoppings) {
-//            if(shopping.getNum() > product.getNum()) {
-//                DatabaseController.UpdateShoppingCartNum(shopping.getSid(),1);
-//            }
-//        }
-//
-//        if(product.getNum() == 0) {
-//            product.setStatus(2);
-//            DatabaseController.UpdateProduct(product);
-//        }
-//        return Status.Status_situation.SUCCESSFUL;
-//    }
-
-    public static void UpdateProduct(Product product)throws SQLException,ClassNotFoundException {
+    public static int UpdateProduct(Product product)throws SQLException,ClassNotFoundException {
         DatabaseController.UpdateProduct(product);
+        return Status.Status_situation.SUCCESSFUL;
     }
 
     public static int UpdateProductNum(long pid, int num)throws SQLException, ClassNotFoundException {

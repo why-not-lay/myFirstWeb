@@ -404,6 +404,63 @@ public class DatabaseController {
         }
     }
 
+    public static ArrayList<Product> GetViewRecordProducts(long uid,int status, int num, int page)throws SQLException,ClassNotFoundException{
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select products.pid, products.uid, product_name,description, price, num, products.status from products,records_view where records_view.pid = products.pid and records_view.uid = ? and status=? limit ?,?")) {
+                ps.setObject(1, uid);
+                ps.setObject(2, status);
+                ps.setObject(3, page);
+                ps.setObject(4, num);
+                try(ResultSet rs = ps.executeQuery()) {
+                    ArrayList<Product> products = new ArrayList<Product>();
+                    while(rs.next()) {
+                        Product product = new Product();
+                        product.setPid(rs.getLong("products.pid"));
+                        product.setUid(rs.getLong("products.uid"));
+                        product.setName(rs.getString("product_name"));
+                        product.setDescription(rs.getString("description"));
+                        product.setPrice(rs.getInt("price"));
+                        product.setNum(rs.getInt("num"));
+                        product.setStatus(rs.getInt("products.status"));
+
+                        products.add(product);
+                    }
+                    return products;
+                }
+            }
+        }
+    }
+
+
+
+    public static ArrayList<Product> GetTradeRecordProducts(long uid,int status, int num, int page)throws SQLException,ClassNotFoundException{
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select products.pid, products.uid, product_name,description, price, products.num, products.status from products,records_trade where records_trade.pid = products.pid and records_trade.uid_buyer = ? and status=? limit ?,?")) {
+                ps.setObject(1, uid);
+                ps.setObject(2, status);
+                ps.setObject(3, page);
+                ps.setObject(4, num);
+                try(ResultSet rs = ps.executeQuery()) {
+                    ArrayList<Product> products = new ArrayList<Product>();
+                    while(rs.next()) {
+                        Product product = new Product();
+                        product.setPid(rs.getLong("products.pid"));
+                        product.setUid(rs.getLong("products.uid"));
+                        product.setName(rs.getString("product_name"));
+                        product.setDescription(rs.getString("description"));
+                        product.setPrice(rs.getInt("price"));
+                        product.setNum(rs.getInt("products.num"));
+                        product.setStatus(rs.getInt("products.status"));
+                        products.add(product);
+                    }
+                    return products;
+                }
+            }
+        }
+    }
+
     public static int InsertShoppingCartRecord(Records_shopping_cart record)throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -512,6 +569,42 @@ public class DatabaseController {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
             try(PreparedStatement ps = conn.prepareStatement("select count(*) from products where status = ? and uid=? ")) {
+                ps.setObject(1, status);
+                ps.setObject(2, uid);
+                try(ResultSet rs = ps.executeQuery()) {
+                    if(rs.next()) {
+                        return rs.getInt(1);
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public static Integer CountViewRecords(long uid, int status)throws SQLException, ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select count(*) from records_view where status = ? and uid=? ")) {
+                ps.setObject(1, status);
+                ps.setObject(2, uid);
+                try(ResultSet rs = ps.executeQuery()) {
+                    if(rs.next()) {
+                        return rs.getInt(1);
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public static Integer CountTradeRecords(long uid, int status)throws SQLException, ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select count(*) from records_trade where status = ? and uid=? ")) {
                 ps.setObject(1, status);
                 ps.setObject(2, uid);
                 try(ResultSet rs = ps.executeQuery()) {
@@ -684,7 +777,7 @@ public class DatabaseController {
     public static ArrayList<Records_view> GetViewRecords(long uid,int status,int num, int page)throws SQLException,ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select vid, uid, pid, date, status from records_view where status = ? and uid=? limit ?,?")) {
+            try(PreparedStatement ps = conn.prepareStatement("select vid, uid, pid, date_view, status from records_view where status = ? and uid=? limit ?,?")) {
                 ps.setObject(1, status);
                 ps.setObject(2, uid);
                 ps.setObject(3, page);
@@ -696,7 +789,7 @@ public class DatabaseController {
                         view.setPid(rs.getLong("pid"));
                         view.setUid(rs.getLong("uid"));
                         view.setVid(rs.getLong("vid"));
-                        view.setDate(rs.getDate("date"));
+                        view.setDate(rs.getDate("date_view"));
                         view.setStatus(rs.getInt("status"));
                         views.add(view);
                     }
@@ -739,7 +832,7 @@ public class DatabaseController {
                 ps.setObject(1, status);
                 ps.setObject(2, uid);
                 ps.setObject(3, page);
-                ps.setObject(3, num);
+                ps.setObject(4, num);
                 try(ResultSet rs = ps.executeQuery()) {
                     ArrayList<Records_trade> trades  = new ArrayList<Records_trade>();
                     while(rs.next()) {

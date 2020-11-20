@@ -23,7 +23,6 @@ public class Item extends HttpServlet {
             resp.sendRedirect("/login");
             return;
         }
-
         try {
             String pid_str  = req.getParameter("pid");
             if(pid_str == null) {

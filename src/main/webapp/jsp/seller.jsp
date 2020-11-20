@@ -4,38 +4,116 @@
 
 <html>
   <%
-    //User user = (User)request.getAttribute("user");
     User user = (User)request.getSession().getAttribute("user");
-    ArrayList<Product> products = (ArrayList<Product>)request.getAttribute("products");
-    Integer all = (Integer)request.getAttribute("all");
+
+    ArrayList<Product> products_onshelf = (ArrayList<Product>)request.getAttribute("products_onshelf");
+    ArrayList<Product> products_offshelf = (ArrayList<Product>)request.getAttribute("products_offshelf");
+    ArrayList<Product> products_soldout = (ArrayList<Product>)request.getAttribute("products_soldout");
+
+    Integer sum_onshelf = (Integer)request.getAttribute("sum_onshelf");
+    Integer sum_offshelf = (Integer)request.getAttribute("sum_offshelf");
+    Integer sum_soldout = (Integer)request.getAttribute("sum_soldout");
+
   %>
   <body>
     <a href="/logout" >登出</a>
     <a href="/" >back</a>
-    <% if(products == null || products.size() == 0){ %>
+
+    <h3>上架商品<h3>
+    <% if(products_onshelf == null || products_onshelf.size() == 0){ %>
     <div>当前没有商品</div>
     <%} else {%>
-      <%for (int i = 0; i < products.size(); i++){%>
+      <%for (int i = 0; i < products_onshelf.size(); i++){%>
     <div>
       <div>==========================================================</div>
-      <%Product product = products.get(i);%>
-      <div><% out.println(product.getName());%></div>
-      <div><% out.println(product.getDescription());%></div>
-      <div><% out.println(product.getPrice());%></div>
-      <div><% out.println(product.getNum());%></div>
+      <%Product product = products_onshelf.get(i);%>
+      <form action="seller/update" method="post">
+        商品名:<input type="text" name="product_name" value="<%=product.getName()%>">
+        商品价格:<input type="number" name="product_price" value="<%=product.getPrice()%>">
+        商品描述:<input type="text" name="product_description" value="<%=product.getDescription()%>">
+        商品数量:<input type="number" name="product_num" value="<%=product.getNum()%>">
+        <input type="submit" value="修改">
+      </form>
+      <a href="/offshelf?pid=<%=product.getId()%>">link</a>
+      <a href="/item?pid=<%=product.getId()%>">link</a>
       <a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a>
       <div>==========================================================</div>
     </div>
       <%}%>
-      <% if(all == null){ %>
-        <a href="/seller?page=0" >1</a>
+      <% if(sum_onshelf == null){ %>
+        <a href="/seller?page_onshlf=0" >1</a>
       <%} else {%>
-        <% int all_page = all/10; %>
+        <% int all_page = sum_onshelf/10; %>
         <%for (int i = 0; i <= all_page; i++){%>
-          <a href="/seller?page=<%=i%>" ><%=i+1%></a>
+          <a href="/seller?page_onshlf=<%=i%>" ><%=i+1%></a>
         <%}%>
       <%}%>
     <%}%>
+
+
+    <h3>售完商品</h3>
+    <% if(products_soldout == null || products_soldout.size() == 0){ %>
+    <div>当前没有商品</div>
+    <%} else {%>
+      <%for (int i = 0; i < products_soldout.size(); i++){%>
+    <div>
+      <div>==========================================================</div>
+      <%Product product = products_soldout.get(i);%>
+      <form action="seller/update" method="post">
+        商品名:<input type="text" name="product_name" value="<%=product.getName()%>">
+        商品价格:<input type="number" name="product_price" value="<%=product.getPrice()%>">
+        商品描述:<input type="text" name="product_description" value="<%=product.getDescription()%>">
+        商品数量:<input type="number" name="product_num" value="<%=product.getNum()%>">
+        <input type="submit" value="修改">
+      </form>
+      <a href="/item?pid=<%=product.getId()%>">link</a>
+      <a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a>
+      <div>==========================================================</div>
+    </div>
+      <%}%>
+      <% if(sum_soldout == null){ %>
+        <a href="/seller?page_soldout=0" >1</a>
+      <%} else {%>
+        <% int all_page = sum_soldout/10; %>
+        <%for (int i = 0; i <= all_page; i++){%>
+          <a href="/seller?page_soldout=<%=i%>" ><%=i+1%></a>
+        <%}%>
+      <%}%>
+    <%}%>
+
+
+    <h3>下架商品</h3>
+    <% if(products_offshelf == null || products_offshelf.size() == 0){ %>
+    <div>当前没有商品</div>
+    <%} else {%>
+      <%for (int i = 0; i < products_offshelf.size(); i++){%>
+    <div>
+      <div>==========================================================</div>
+      <%Product product = products_offshelf.get(i);%>
+      <form action="seller/update" method="post">
+        商品名:<input type="text" name="product_name" value="<%=product.getName()%>">
+        商品价格:<input type="number" name="product_price" value="<%=product.getPrice()%>">
+        商品描述:<input type="text" name="product_description" value="<%=product.getDescription()%>">
+        商品数量:<input type="number" name="product_num" value="<%=product.getNum()%>">
+        <input type="submit" value="修改">
+      </form>
+      <a href="/onshelf?pid=<%=product.getId()%>">link</a>
+      <a href="/item?pid=<%=product.getId()%>">link</a>
+      <a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a>
+      <div>==========================================================</div>
+    </div>
+      <%}%>
+      <% if(sum_offshelf == null){ %>
+        <a href="/seller?page_offshelf=0" >1</a>
+      <%} else {%>
+        <% int all_page = sum_offshelf/10; %>
+        <%for (int i = 0; i <= all_page; i++){%>
+          <a href="/seller?page_offshelf=<%=i%>" ><%=i+1%></a>
+        <%}%>
+      <%}%>
+    <%}%>
+
+
     <h3>插入商品</h3>
     <form action="seller/add" method="post">
       商品名:<input type="text" name="product_name">

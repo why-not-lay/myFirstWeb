@@ -2,7 +2,7 @@ package com.myFirstWeb.controller;
 
 import java.util.HashMap;
 import java.util.Date;
-import com.myFirstWeb.bean.User;
+import com.myFirstWeb.bean.*;
 import java.sql.SQLException;
 
 
@@ -20,9 +20,7 @@ public class UserController {
         if(name == null || password == null) {
             return false;
         }
-
         User user = Search(name);
-
         if(user == null) {
             return false;
         }
@@ -30,24 +28,26 @@ public class UserController {
         return user.getPassword().equals(password);
     }
 
-    public  static void Insert(User user)throws SQLException,ClassNotFoundException{
+    public  static int Insert(User user)throws SQLException,ClassNotFoundException{
         User old = Search(user.getName());
         if(old != null) {
-            return;
+            return Status.Status_situation.NOT_EXIST;
         }
         Date date = new Date();
         user.setDate_login(date);
         user.setDate_create(date);
         DatabaseController.InsertUser(user);
+        return Status.Status_situation.SUCCESSFUL;
     }
 
-    public static void UpdateTime(long uid)throws SQLException, ClassNotFoundException {
+    public static int UpdateTime(long uid)throws SQLException, ClassNotFoundException {
         User user = Search(uid);
         if(user == null) {
-            return;
+            return Status.Status_situation.NOT_EXIST;
         }
         user.setDate_login(new Date());
         DatabaseController.UpdateUser(user);
+        return Status.Status_situation.SUCCESSFUL;
     }
 
 }

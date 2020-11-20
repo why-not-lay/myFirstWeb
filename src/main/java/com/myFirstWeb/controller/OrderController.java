@@ -15,7 +15,6 @@ public class OrderController {
         view.setDate(new Date());
         view.setStatus(Status.Status_records_view.USED);
         DatabaseController.InsertViewRecord(view);
-
         return Status.Status_situation.SUCCESSFUL;
     }
 
@@ -83,21 +82,19 @@ public class OrderController {
     public static int InsertTradeRecord(long uid, long pid, int num)throws SQLException,ClassNotFoundException {
         Product product = DatabaseController.SearchProduct(pid);
         if(product == null || product.getNum() < num) {
-            return 0;
+            return Status.Status_situation.NOT_EXIST;
         }
-
         Records_trade trade = new Records_trade();
         trade.setPid(pid);
         trade.setUid_buyer(uid);
         trade.setUid_seller(product.getUid());
-        trade.setStatus(1);
+        trade.setStatus(Status.Status_records_trade.USED);
         trade.setCost(num * product.getPrice());
         trade.setDate_trade(new Date());
         trade.setNum(num);
         DatabaseController.InsertTradeRecord(trade);
-        return 1;
+        return Status.Status_situation.SUCCESSFUL;
     }
-
 
     public static void RemoveTradeRecord(long tid)throws SQLException, ClassNotFoundException {
         DatabaseController.RemoveTradeRecord(tid);
@@ -107,8 +104,16 @@ public class OrderController {
         return DatabaseController.GetTradeRecords(uid, Status.Status_records_trade.USED, num, page);
     }
 
+    public static ArrayList<Product> GetTradeRecordProducts(long uid, int num, int page)throws SQLException, ClassNotFoundException {
+        return DatabaseController.GetTradeRecordProducts(uid, Status.Status_records_trade.USED, num, page);
+    }
+
     public static ArrayList<Records_view> GetViewRecords(long uid, int num, int page)throws SQLException, ClassNotFoundException  {
         return DatabaseController.GetViewRecords(uid, Status.Status_records_view.USED,num, page);
+    }
+
+    public static ArrayList<Product> GetViewRecordProducts(long uid, int num, int page)throws SQLException, ClassNotFoundException {
+        return DatabaseController.GetViewRecordProducts(uid, Status.Status_records_view.USED, num, page);
     }
 
     public static ArrayList<Records_shopping_cart> GetShoppingCartRecords(long uid, int num, int page)throws SQLException, ClassNotFoundException {
@@ -119,10 +124,15 @@ public class OrderController {
         return DatabaseController.CountShoppingCartRecords(uid, Status.Status_records_shopping_cart.SELECTED) + DatabaseController.CountShoppingCartRecords(uid, Status.Status_records_shopping_cart.UNSELECTED);
     }
 
+    public static int CountViewRecords(long uid)throws SQLException, ClassNotFoundException {
+        return DatabaseController.CountViewRecords(uid, Status.Status_records_view.USED);
+    }
+
+    public static int CountTradeRecords(long uid)throws SQLException,ClassNotFoundException {
+        return DatabaseController.CountTradeRecords(uid, Status.Status_records_trade.USED);
+    }
+
     public static ArrayList<Records_shopping_cart> GetSelected(long uid) throws SQLException,ClassNotFoundException  {
         return DatabaseController.GetShoppingCartRecords(uid, Status.Status_records_shopping_cart.SELECTED);
     }
-
-
-
 }

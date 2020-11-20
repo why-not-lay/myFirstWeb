@@ -2,7 +2,6 @@
 <%@ page import="com.myFirstWeb.bean.*" %>
 <html>
   <%
-    //User user = (User)request.getAttribute("user");
     User user = (User)request.getSession().getAttribute("user");
     Product product = (Product)request.getAttribute("product");
   %>
@@ -16,10 +15,12 @@
     <div><%=product.getName()%></div>
     <div><%=product.getDescription()%></div>
     <div><%=product.getPrice%></div>
-    <div>
-      数量:<input type="number" name="num">
-    </div>
-    <button type="submit">添加</button>
+    <form action="/item/update" method="post">
+      <input type="hidden" name="pid" value="<%=product.getId()%>">
+      数量: <input type="num" name="num" value="<%%product.getNum()>">
+      <input type="submit" value="Submit">
+    </form>
+
     <div>==========================================================</div>
     	
   </body>
