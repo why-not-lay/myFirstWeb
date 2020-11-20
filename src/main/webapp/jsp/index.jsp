@@ -3,7 +3,6 @@
 <%@ page import="java.util.ArrayList" %>
 <html>
   <%
-    //User user = (User)request.getAttribute("user");
     User user = (User)request.getSession().getAttribute("user");
     ArrayList<Product> products = (ArrayList)request.getAttribute("products");
     Integer all = (Integer)request.getAttribute("all");
@@ -25,11 +24,11 @@
     <%} else {%>
       <%for (Product product: products){%>
       <div>======================================</div>
-      <div><% out.println(product.getName());%></div>
-      <div><% out.println(product.getDescription());%></div>
-      <div><% out.println(product.getPrice());%></div>
-      <div><% out.println(product.getNum());%></div>
-      <a href="/user?uid=<%=product.getUid()%>" >卖家</a>
+      <div><%=product.getName()%></div>
+      <div><%=product.getDescription()%></div>
+      <div><%=product.getPrice()%></div>
+      <div><%=product.getNum()%></div>
+      <a href="/item?pid=<%=product.getId()%>" >商品主页</a>
       <div>======================================</div>
       <%}%>
       <% if(all == null){ %>

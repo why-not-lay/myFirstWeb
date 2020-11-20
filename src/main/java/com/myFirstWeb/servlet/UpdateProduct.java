@@ -26,8 +26,9 @@ public class UpdateProduct extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
         String pid_str = req.getParameter("pid");
+        String uid_str = req.getParameter("uid");
 
-        if(user == null) {
+        if(user == null || uid_str == null) {
             resp.sendRedirect("/login");
             return;
         }
@@ -38,10 +39,15 @@ public class UpdateProduct extends HttpServlet {
         }
 
         long pid = Long.parseLong(pid_str);
+        long uid = Long.parseLong(uid_str);
         try {
             Product product = ProductController.SearchProduct(pid);
             if(product == null) {
                 resp.sendRedirect("/seller");
+                return;
+            }
+            if(product.getUid() != user.getId() || uid != user.getId()) {
+                resp.sendRedirect("index");
                 return;
             }
             String product_name = req.getParameter("product_name");

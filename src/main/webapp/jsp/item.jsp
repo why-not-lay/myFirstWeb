@@ -14,13 +14,20 @@
     <div>==========================================================</div>
     <div><%=product.getName()%></div>
     <div><%=product.getDescription()%></div>
-    <div><%=product.getPrice%></div>
-    <form action="/item/update" method="post">
-      <input type="hidden" name="pid" value="<%=product.getId()%>">
-      数量: <input type="num" name="num" value="<%%product.getNum()>">
-      <input type="submit" value="Submit">
-    </form>
-
+    <div><%=product.getPrice()%></div>
+    <% if(product.getStatus() == Status.Status_products.ON_SHELF){ %>
+      <form action="#" method="post">
+        <input type="hidden" name="pid" value="<%=product.getId()%>">
+        数量: <input type="num" name="num" value="<%=product.getNum()%>">
+        <input type="submit" value="添加购物车">
+      </form>
+    <%} else {%>
+      <% if(product.getStatus() == Status.Status_products.SOLD_OUT){ %>
+        商品正缺货
+      <%} else {%>
+        商品已下架
+      <%}%>
+    <%}%>
     <div>==========================================================</div>
     	
   </body>

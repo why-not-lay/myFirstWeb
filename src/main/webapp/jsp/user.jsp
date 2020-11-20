@@ -36,20 +36,20 @@
     <div>
       <div>==========================================================</div>
       <%Product product = products.get(i);%>
-      <div><% out.println(product.getName());%></div>
-      <div><% out.println(product.getDescription());%></div>
-      <div><% out.println(product.getPrice());%></div>
-      <div><% out.println(product.getNum());%></div>
-      <a href="/item?pid=<%=product.getId()%>">link</a>
+      <div><%=product.getName()%></div>
+      <div><%=product.getDescription()%></div>
+      <div><%=product.getPrice()%></div>
+      <div><%=product.getNum()%></div>
+      <a href="/item?pid=<%=product.getId()%>">商品页</a>
       <div>==========================================================</div>
     </div>
       <%}%>
       <% if(page_sum_products == null){ %>
-        <a href="/user?uid=<%=new_user.getId()%>&page_products=0" >1</a>
+        <a href="/user?uid=<%=user.getId()%>&page_products=0" >1</a>
       <%} else {%>
         <% int all_page = page_sum_products/10; %>
         <%for (int i = 0; i <= all_page; i++){%>
-          <a href="/user?uid=<%=new_user.getId()%>&page_products=<%=i%>" ><%=i+1%></a>
+          <a href="/user?uid=<%=user.getId()%>&page_products=<%=i%>" ><%=i+1%></a>
         <%}%>
       <%}%>
     <%}%>
@@ -62,21 +62,22 @@
       <%for (int i = 0; i < products_view.size(); i++){%>
     <div>
       <div>==========================================================</div>
-      <%Records_view view = views.get(i)%>
-      <%Product product = products_view.get(i)%>
+      <%Records_view view = views.get(i);%>
+      <%Product product = products_view.get(i);%>
       <div><%=product.getName()%></div>
       <div><%=product.getPrice()%></div>
       <div><%=view.getDate()%></div>
-      <a href="/item?pid=<%=product.getId()%>">link</a>
+      <a href="/item?pid=<%=product.getId()%>">商品页</a>
+      <a href="/removeview?vid=<%=view.getVid()%>">删除</a>
       <div>==========================================================</div>
     </div>
       <%}%>
       <% if(page_sum_views == null){ %>
-        <a href="/user?uid=<%=new_user.getId()%>&page_views=0" >1</a>
+        <a href="/user?uid=<%=user.getId()%>&page_views=0" >1</a>
       <%} else {%>
         <% int all_page = page_sum_views/10; %>
         <%for (int i = 0; i <= all_page; i++){%>
-          <a href="/user?uid=<%=new_user.getId()%>&page_views=<%=i%>" ><%=i+1%></a>
+          <a href="/user?uid=<%=user.getId()%>&page_views=<%=i%>" ><%=i+1%></a>
         <%}%>
       <%}%>
     <%}%>
@@ -88,22 +89,23 @@
       <%for (int i = 0; i < products_trade.size(); i++){%>
     <div>
       <div>==========================================================</div>
-      <%Records_trade trade = trades.get(i)%>
-      <%Product product = products_trade.get(i)%>
+      <%Records_trade trade = trades.get(i);%>
+      <%Product product = products_trade.get(i);%>
       <div><%=product.getName()%></div>
       <div><%=product.getPrice()%></div>
-      <div><%=trades.getNum()%></div>
-      <div><%=trades.getCost()%></div>
-      <a href="/item?pid=<%=product.getId()%>">link</a>
+      <div><%=trade.getNum()%></div>
+      <div><%=trade.getCost()%></div>
+      <a href="/item?pid=<%=product.getId()%>">商品页</a>
+      <a href="/removetrade?tid=<%=trade.getTid()%>">删除</a>
       <div>==========================================================</div>
     </div>
       <%}%>
       <% if(page_sum_trades == null){ %>
-        <a href="/user?uid=<%=new_user.getId()%>&page_trades=0" >1</a>
+        <a href="/user?uid=<%=user.getId()%>&page_trades=0" >1</a>
       <%} else {%>
         <% int all_page = page_sum_trades/10; %>
         <%for (int i = 0; i <= all_page; i++){%>
-          <a href="/user?uid=<%=new_user.getId()%>&page_trades=<%=i%>" ><%=i+1%></a>
+          <a href="/user?uid=<%=user.getId()%>&page_trades=<%=i%>" ><%=i+1%></a>
         <%}%>
       <%}%>
     <%}%>

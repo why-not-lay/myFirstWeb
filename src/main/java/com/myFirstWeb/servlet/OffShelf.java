@@ -37,6 +37,13 @@ public class OffShelf extends HttpServlet {
 
         long pid = Long.parseLong(pid_str);
         try {
+            Product product = ProductController.SearchProduct(pid);
+            if(product == null) {
+                resp.sendRedirect("/index");;
+            }
+            if(product.getUid() != user.getId()) {
+                resp.sendRedirect("/index");
+            }
             ProductController.OffShelfProduct(pid);
         } catch (Exception e) {
             e.printStackTrace();

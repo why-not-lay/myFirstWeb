@@ -62,7 +62,7 @@
     <description></description>
     <display-name>UpdateProduct</display-name>
     <servlet-name>UpdateProduct</servlet-name>
-    <servlet-class>com.myfirstweb.servlet.UpdateProduct</servlet-class>
+    <servlet-class>com.myFirstWeb.servlet.UpdateProduct</servlet-class>
   </servlet>
   <servlet>
     <description></description>
@@ -76,9 +76,56 @@
     <servlet-name>Onshelf</servlet-name>
     <servlet-class>com.myFirstWeb.servlet.Onshelf</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>RemoveViewRecord</display-name>
+    <servlet-name>RemoveViewRecord</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.RemoveViewRecord</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>RemoveTradeRecord</display-name>
+    <servlet-name>RemoveTradeRecord</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.RemoveTradeRecord</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>OffShelf</display-name>
+    <servlet-name>OffShelf</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.OffShelf</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>OnShelf</display-name>
+    <servlet-name>OnShelf</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.OnShelf</servlet-class>
+  </servlet>
+  
+  
+  
+  
 
   
   
+  
+  
+  
+  <servlet-mapping>
+    <servlet-name>RemoveViewRecord</servlet-name>
+    <url-pattern>/removeview</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RemoveTradeRecord</servlet-name>
+    <url-pattern>/removetrade</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OffShelf</servlet-name>
+    <url-pattern>/seller/offshelf</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OnShelf</servlet-name>
+    <url-pattern>/seller/onshelf</url-pattern>
+  </servlet-mapping>
   
   
   

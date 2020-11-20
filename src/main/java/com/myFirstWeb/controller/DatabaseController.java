@@ -135,7 +135,7 @@ public class DatabaseController {
     public static int RemoveTradeRecord(long tid) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("update into records_trade set status=? where sid=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("update into records_trade set status=? where tid=?")) {
                 ps.setObject(1, Status.Status_records_trade.DELETED);
                 ps.setObject(2, tid);
                 return ps.executeUpdate();
@@ -237,7 +237,7 @@ public class DatabaseController {
     public static int RemoveViewRecord(long vid) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("update records_view set status=? where sid=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("update records_view set status=? where vid=?")) {
                 ps.setObject(1, Status.Status_records_view.DELETED);
                 ps.setObject(2, vid);
                 return ps.executeUpdate();
@@ -305,7 +305,7 @@ public class DatabaseController {
     public static Product SearchProduct(long pid)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select uid, product_name,description, price, num, status from products where status>0 and pid=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("select uid, product_name,description, price, num, status from products where pid=?")) {
                 ps.setObject(1, pid);
                 try(ResultSet rs = ps.executeQuery()) {
                     Product product = null;
@@ -407,7 +407,7 @@ public class DatabaseController {
     public static ArrayList<Product> GetViewRecordProducts(long uid,int status, int num, int page)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select products.pid, products.uid, product_name,description, price, num, products.status from products,records_view where records_view.pid = products.pid and records_view.uid = ? and status=? limit ?,?")) {
+            try(PreparedStatement ps = conn.prepareStatement("select products.pid, products.uid, product_name,description, price, num, products.status from products,records_view where records_view.pid = products.pid and records_view.uid = ? and records_view.status=? limit ?,?")) {
                 ps.setObject(1, uid);
                 ps.setObject(2, status);
                 ps.setObject(3, page);
@@ -437,7 +437,7 @@ public class DatabaseController {
     public static ArrayList<Product> GetTradeRecordProducts(long uid,int status, int num, int page)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select products.pid, products.uid, product_name,description, price, products.num, products.status from products,records_trade where records_trade.pid = products.pid and records_trade.uid_buyer = ? and status=? limit ?,?")) {
+            try(PreparedStatement ps = conn.prepareStatement("select products.pid, products.uid, product_name,description, price, products.num, products.status from products,records_trade where records_trade.pid = products.pid and records_trade.uid_buyer = ? and records_trade.status=? limit ?,?")) {
                 ps.setObject(1, uid);
                 ps.setObject(2, status);
                 ps.setObject(3, page);
@@ -604,7 +604,7 @@ public class DatabaseController {
     public static Integer CountTradeRecords(long uid, int status)throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select count(*) from records_trade where status = ? and uid=? ")) {
+            try(PreparedStatement ps = conn.prepareStatement("select count(*) from records_trade where status = ? and uid_buyer=? ")) {
                 ps.setObject(1, status);
                 ps.setObject(2, uid);
                 try(ResultSet rs = ps.executeQuery()) {
@@ -802,7 +802,7 @@ public class DatabaseController {
     public static ArrayList<Records_trade> GetTradeRecords(long uid,int status)throws SQLException,ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select tid, pid, uid_buyer,uid_seller,num,date_trade, cost, status from records_trade where status = ? ans uid=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("select tid, pid, uid_buyer,uid_seller,num,date_trade, cost, status from records_trade where status = ? and uid_buyer=?")) {
                 ps.setObject(1, status);
                 ps.setObject(2, uid);
                 try(ResultSet rs = ps.executeQuery()) {
@@ -828,7 +828,7 @@ public class DatabaseController {
     public static ArrayList<Records_trade> GetTradeRecords(long uid,int status,int num, int page)throws SQLException,ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select tid, pid, uid_buyer,uid_seller,num,date_trade, cost, status from records_trade where status = ? ans uid=? limit ?,?")) {
+            try(PreparedStatement ps = conn.prepareStatement("select tid, pid, uid_buyer,uid_seller,num,date_trade, cost, status from records_trade where status = ? and uid_buyer=? limit ?,?")) {
                 ps.setObject(1, status);
                 ps.setObject(2, uid);
                 ps.setObject(3, page);
