@@ -100,16 +100,48 @@
     <servlet-name>OnShelf</servlet-name>
     <servlet-class>com.myFirstWeb.servlet.OnShelf</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>ShoppingCart</display-name>
+    <servlet-name>ShoppingCart</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.ShoppingCart</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>Buy</display-name>
+    <servlet-name>Buy</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.Buy</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>RemoveShoppingCartRecord</display-name>
+    <servlet-name>RemoveShoppingCartRecord</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.RemoveShoppingCartRecord</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>ConfirmBuy</display-name>
+    <servlet-name>ConfirmBuy</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.ConfirmBuy</servlet-class>
+  </servlet>
   
-  
-  
-  
-
-  
-  
-  
-  
-  
+    
+  <servlet-mapping>
+    <servlet-name>ConfirmBuy</servlet-name>
+    <url-pattern>/shoppingcart/pay</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RemoveShoppingCartRecord</servlet-name>
+    <url-pattern>/shoppingcart/remove</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Buy</servlet-name>
+    <url-pattern>/shoppingcart/buy</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ShoppingCart</servlet-name>
+    <url-pattern>/shoppingcart</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>RemoveViewRecord</servlet-name>
     <url-pattern>/removeview</url-pattern>

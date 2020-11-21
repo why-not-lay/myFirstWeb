@@ -42,7 +42,7 @@ public class OrderController {
         shopping.setNum(num);
         shopping.setUid(uid);
         shopping.setPid(pid);
-        shopping.setStatus(Status.Status_records_shopping_cart.SELECTED);
+        shopping.setStatus(Status.Status_records_shopping_cart.USED);
         DatabaseController.InsertShoppingCartRecord(shopping);
         return Status.Status_situation.SUCCESSFUL;
     }
@@ -116,13 +116,33 @@ public class OrderController {
         return DatabaseController.GetViewRecordProducts(uid, Status.Status_records_view.USED, num, page);
     }
 
-    public static ArrayList<Records_shopping_cart> GetShoppingCartRecords(long uid, int num, int page)throws SQLException, ClassNotFoundException {
-        return DatabaseController.GetShoppingCartRecords(uid, num, page);
+    public static ArrayList<Records_shopping_cart> GetShoppingCartRecords(long uid, int status,int num, int page)throws SQLException, ClassNotFoundException {
+        return DatabaseController.GetShoppingCartRecords(uid,status,num,page);
     }
 
-    public static int CountShoppingCartRecords(long uid)throws SQLException, ClassNotFoundException {
-        return DatabaseController.CountShoppingCartRecords(uid, Status.Status_records_shopping_cart.SELECTED) + DatabaseController.CountShoppingCartRecords(uid, Status.Status_records_shopping_cart.UNSELECTED);
+//    public static ArrayList<Product> GetShoppingCartUsedProducts(long uid, int num, int page)throws SQLException, ClassNotFoundException {
+//        return DatabaseController.GetShoppingCartRecordProducts(uid, Status.Status_records_shopping_cart.USED, num, page);
+//    }
+
+//    public static ArrayList<Product> GetShoppingCartOffProducts(long uid, int num, int page)throws SQLException, ClassNotFoundException {
+//        return DatabaseController.GetShoppingCartRecordProducts(uid, Status.Status_records_shopping_cart.OFF_SHLEF, num, page);
+//    }
+
+    public static ArrayList<Product> GetShoppingCartProducts(long uid, int status, int num, int page)throws SQLException, ClassNotFoundException {
+        return DatabaseController.GetShoppingCartRecordProducts(uid, status, num, page);
     }
+
+    public static int CountShoppingCartRecords(long uid, int status)throws SQLException, ClassNotFoundException {
+        return DatabaseController.CountShoppingCartRecords(uid, status);
+    }
+
+//    public static int CountShoppingCartOffsheltRecords(long uid)throws SQLException, ClassNotFoundException {
+//        return DatabaseController.CountShoppingCartRecords(uid, Status.Status_records_shopping_cart.OFF_SHLEF);
+//    }
+//
+//    public static int CountShoppingCartNotEnoughRecords(long uid)throws SQLException, ClassNotFoundException {
+//        return DatabaseController.CountShoppingCartRecords(uid, Status.Status_records_shopping_cart.NOT_ENOUGH);
+//    }
 
     public static int CountViewRecords(long uid)throws SQLException, ClassNotFoundException {
         return DatabaseController.CountViewRecords(uid, Status.Status_records_view.USED);
@@ -133,6 +153,14 @@ public class OrderController {
     }
 
     public static ArrayList<Records_shopping_cart> GetSelected(long uid) throws SQLException,ClassNotFoundException  {
-        return DatabaseController.GetShoppingCartRecords(uid, Status.Status_records_shopping_cart.SELECTED);
+        return DatabaseController.GetShoppingCartRecords(uid, Status.Status_records_shopping_cart.USED);
+    }
+
+    public static Records_shopping_cart SearchShoppingCartRecord(long sid, int status)throws SQLException, ClassNotFoundException {
+        Records_shopping_cart shopping =  DatabaseController.SearchShoppingCartRecord(sid) ;
+        if(shopping != null && shopping.getStatus() == status) {
+            return shopping;
+        }
+        return null;
     }
 }

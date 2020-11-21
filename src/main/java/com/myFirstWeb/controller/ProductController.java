@@ -31,8 +31,7 @@ public class ProductController {
     }
 
     public static int Remove(long pid)throws SQLException,ClassNotFoundException{
-        DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.DELETED, Status.Status_records_shopping_cart.SELECTED);
-        DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.DELETED, Status.Status_records_shopping_cart.UNSELECTED);
+        DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.DELETED, Status.Status_records_shopping_cart.USED);
         DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.DELETED, Status.Status_records_shopping_cart.OFF_SHLEF);
         DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.DELETED, Status.Status_records_shopping_cart.NOT_ENOUGH);
         DatabaseController.RemoveProduct(pid);
@@ -66,7 +65,7 @@ public class ProductController {
         }
         product.setStatus(Status.Status_products.ON_SHELF);
         DatabaseController.UpdateProduct(product);
-        DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.UNSELECTED, Status.Status_records_shopping_cart.OFF_SHLEF);
+        DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.USED, Status.Status_records_shopping_cart.OFF_SHLEF);
         return 1;
     }
 
@@ -100,7 +99,7 @@ public class ProductController {
         ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecords(pid, Status.Status_records_shopping_cart.DELETED);
         for (Records_shopping_cart shopping : shoppings) {
             if(num >= shopping.getNum() && shopping.getStatus() == Status.Status_records_shopping_cart.NOT_ENOUGH) {
-                shopping.setStatus(Status.Status_records_shopping_cart.UNSELECTED);
+                shopping.setStatus(Status.Status_records_shopping_cart.USED);
                 DatabaseController.UpdateShoppingCartRecords(shopping);
             }
             if(num < shopping.getNum() && shopping.getStatus() != Status.Status_records_shopping_cart.NOT_ENOUGH) {

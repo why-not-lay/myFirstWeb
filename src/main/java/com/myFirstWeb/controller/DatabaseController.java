@@ -175,12 +175,13 @@ public class DatabaseController {
     public static int UpdateProduct(Product product) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("update products set product_name=?,description=?,price=?,num=? where pid=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("update products set product_name=?,description=?,price=?,num=?, status=? where pid=?")) {
                 ps.setObject(1, product.getName());
                 ps.setObject(2, product.getDescription());
                 ps.setObject(3, product.getPrice());
                 ps.setObject(4,product.getNum());
-                ps.setObject(5, product.getId());
+                ps.setObject(5, product.getStatus());
+                ps.setObject(6, product.getId());
 
                 return ps.executeUpdate();
             } catch (Exception e) {
@@ -433,6 +434,32 @@ public class DatabaseController {
     }
 
 
+    public static ArrayList<Product> GetShoppingCartRecordProducts(long uid,int status, int num, int page)throws SQLException,ClassNotFoundException{
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select products.pid, products.uid, product_name,description, price, products.num, products.status from products,records_shopping_cart where records_shopping_cart.pid = products.pid and records_shopping_cart.uid = ? and records_shopping_cart.status=? limit ?,?")) {
+                ps.setObject(1, uid);
+                ps.setObject(2, status);
+                ps.setObject(3, page);
+                ps.setObject(4, num);
+                try(ResultSet rs = ps.executeQuery()) {
+                    ArrayList<Product> products = new ArrayList<Product>();
+                    while(rs.next()) {
+                        Product product = new Product();
+                        product.setPid(rs.getLong("products.pid"));
+                        product.setUid(rs.getLong("products.uid"));
+                        product.setName(rs.getString("product_name"));
+                        product.setDescription(rs.getString("description"));
+                        product.setPrice(rs.getInt("price"));
+                        product.setNum(rs.getInt("products.num"));
+                        product.setStatus(rs.getInt("products.status"));
+                        products.add(product);
+                    }
+                    return products;
+                }
+            }
+        }
+    }
 
     public static ArrayList<Product> GetTradeRecordProducts(long uid,int status, int num, int page)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);

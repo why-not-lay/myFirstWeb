@@ -47,7 +47,7 @@ public class UpdateProduct extends HttpServlet {
                 return;
             }
             if(product.getUid() != user.getId() || uid != user.getId()) {
-                resp.sendRedirect("index");
+                resp.sendRedirect("/index");
                 return;
             }
             String product_name = req.getParameter("product_name");

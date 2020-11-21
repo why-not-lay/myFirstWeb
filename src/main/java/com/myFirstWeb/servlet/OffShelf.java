@@ -45,9 +45,9 @@ public class OffShelf extends HttpServlet {
                 resp.sendRedirect("/index");
             }
             ProductController.OffShelfProduct(pid);
+            resp.sendRedirect("/seller");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        resp.sendRedirect("/seller");
     }
 }

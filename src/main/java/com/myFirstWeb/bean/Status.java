@@ -16,8 +16,10 @@ public final class Status {
         public static final int  DELETED = 0;
         public static final int  OFF_SHLEF = 1;
         public static final int  NOT_ENOUGH = 2;
-        public static final int  UNSELECTED = 3;
-        public static final int  SELECTED = 4;
+//        public static final int  UNSELECTED = 3;
+//        public static final int  SELECTED = 4;
+        public static final int USED = 5;
+
     }
 
     public static class Status_products {

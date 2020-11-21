@@ -24,10 +24,22 @@ public class Buy extends HttpServlet {
             return;
         }
         try {
-            ArrayList<Records_shopping_cart> shoppings = OrderController.GetSelected(user.getId());
+            String sid_str = req.getParameter("sid");
+            int sid = -1;
+            ArrayList<Records_shopping_cart> shoppings = null;
+            if(sid_str == null) {
+                sid = Integer.parseInt(sid_str);
+                shoppings = new ArrayList<Records_shopping_cart>();
+                Records_shopping_cart shopping = OrderController.SearchShoppingCartRecord(sid, Status.Status_records_shopping_cart.USED);
+                if(shopping != null) {
+                    shoppings.add(shopping);
+                }
+            } else {
+                shoppings = OrderController.GetSelected(user.getId());
+            }
 
-            if(shoppings.size()==0) {
-                resp.sendRedirect("/shopping");
+            if(shoppings.size() == 0) {
+                resp.sendRedirect("/shoppingcart");
                 return;
             }
 
@@ -43,6 +55,9 @@ public class Buy extends HttpServlet {
             }
             req.getSession().setAttribute("products_buy", products);
             req.getSession().setAttribute("cost_price",(Integer)cost_price);
+//            if(sid != -1) {
+//                req.getSession().setAttribute("sid", (Integer)sid);
+//            }
             req.getRequestDispatcher("jsp/buy.jsp").forward(req, resp);
 
         } catch (Exception e) {

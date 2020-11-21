@@ -27,7 +27,9 @@
     <div>
       <div>==========================================================</div>
       <%Product product = products_onshelf.get(i);%>
-      <form action="seller/update?pid=<%=product.getId()%>&uid=<%=user.getId()%>" method="post">
+      <form action="seller/update" method="post">
+        <input type="hidden" name="pid" value="<%=product.getId()%>">
+        <input type="hidden" name="uid" value="<%=user.getId()%>">
         商品名:<input type="text" name="product_name" value="<%=product.getName()%>">
         商品价格:<input type="number" name="product_price" value="<%=product.getPrice()%>">
         商品描述:<input type="text" name="product_description" value="<%=product.getDescription()%>">

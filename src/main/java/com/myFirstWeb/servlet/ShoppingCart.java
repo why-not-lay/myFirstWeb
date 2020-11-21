@@ -29,34 +29,48 @@ public class ShoppingCart extends HttpServlet {
             resp.sendRedirect("/login");
             return;
         }
-        String status_str = req.getParameter("status");
-        String sid_str = req.getParameter("sid");
-        String page_str = req.getParameter("page");
+
+        String page_used_str = req.getParameter("page_used");
+        String page_offshelf_str = req.getParameter("page_offshelf");
+        String page_not_enough_str = req.getParameter("page_not_enought");
+
+        int page_used = 0, page_offshelf = 0, page_not_enough = 0;
+        if(page_used_str != null) {
+            page_used = Integer.parseInt(page_used_str);
+        }
+        if(page_offshelf_str != null) {
+            page_offshelf = Integer.parseInt(page_offshelf_str);
+        }
+        if(page_not_enough_str != null) {
+            page_not_enough = Integer.parseInt(page_not_enough_str);
+        }
 
         try {
-            int page = 0;
-            if(page_str != null) {
-                page = Integer.parseInt(page_str);
-            }
+            ArrayList<Records_shopping_cart> shoppings_used = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.USED,10,page_used );
+            ArrayList<Records_shopping_cart> shoppings_offshelf = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.OFF_SHLEF,10,page_used );
+            ArrayList<Records_shopping_cart> shoppings_not_enough = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.NOT_ENOUGH,10,page_used );
 
-            if(sid_str != null && status_str != null) {
-                long sid = Long.parseLong(sid_str);
-                int status = Integer.parseInt(status_str);
-                if(status == 2 || status == 3) {
-                    OrderController.UpdateShoppingCartStatus(sid, status);
-                }
-            }
 
-            ArrayList<Records_shopping_cart> shoppings = OrderController.GetShoppingCartRecords(user.getId(), 10, page);
-            ArrayList<Product> products = new ArrayList<Product>();
-            for (Records_shopping_cart shopping : shoppings) {
-                Product product = ProductController.SearchProduct(shopping.getPid());
-                if(product != null) {
-                    products.add(product);
-                }
-            }
-            req.setAttribute("shoppings", shoppings);
-            req.setAttribute("products", products);
+            ArrayList<Product> products_used = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.USED,10, page_used);
+            ArrayList<Product> products_offshelf = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.OFF_SHLEF,10,page_offshelf);
+            ArrayList<Product> products_not_enough = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.NOT_ENOUGH,10, page_not_enough);
+
+            Integer sum_used = OrderController.CountShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.USED);
+            Integer sum_offshelf = OrderController.CountShoppingCartRecords(user.getId(),Status.Status_records_shopping_cart.OFF_SHLEF);
+            Integer sum_not_enough = OrderController.CountShoppingCartRecords(user.getId(),Status.Status_records_shopping_cart.NOT_ENOUGH);
+
+            req.setAttribute("shoppings_used", shoppings_used);
+            req.setAttribute("shoppings_offshelf",shoppings_offshelf);
+            req.setAttribute("shoppings_not_enough", shoppings_not_enough);
+
+            req.setAttribute("products_used", products_used);
+            req.setAttribute("products_offshelf", products_offshelf);
+            req.setAttribute("products_not_enough", products_not_enough);
+
+            req.setAttribute("sum_used", sum_used);
+            req.setAttribute("sum_offshelf", sum_offshelf);
+            req.setAttribute("sum_not_enough", sum_not_enough);
+
             req.getRequestDispatcher("jsp/shoppingcart.jsp").forward(req, resp);
 
         } catch (Exception e) {

@@ -35,7 +35,6 @@ public class OnShelf extends HttpServlet {
             resp.sendRedirect("/seller");
             return;
         }
-        // 上架无反应, 更新商品问题:  <20-11-20, yourname> //
 
         long pid = Long.parseLong(pid_str);
         try {

@@ -32,13 +32,9 @@ public class RemoveShoppingCart extends HttpServlet {
             long sid = Long.parseLong(sid_str);
             OrderController.RemoveShoppingCartRecord(sid);
             resp.sendRedirect("/shoppingcart");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     @Override
