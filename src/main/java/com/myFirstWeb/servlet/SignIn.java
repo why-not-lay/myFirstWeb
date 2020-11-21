@@ -46,7 +46,7 @@ public class SignIn extends HttpServlet {
 //            req.getRequestDispatcher("jsp/index.jsp").forward(req, resp);
             resp.sendRedirect("/");
         } else {
-            req.getRequestDispatcher("jsp/signin.jsp").forward(req,resp);
+            req.getRequestDispatcher("/jsp/signin.jsp").forward(req,resp);
         }
 
     }

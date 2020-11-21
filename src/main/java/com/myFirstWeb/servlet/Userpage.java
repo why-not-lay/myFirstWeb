@@ -29,18 +29,24 @@ public class Userpage extends HttpServlet {
                 resp.sendRedirect("/login");
             }
             int page_products = 0, page_views = 0, page_trades = 0;
-            if(page_products_str != null && page_views_str != null && page_trades_str != null) {
+            if(page_products_str != null ) {
                 page_products = Integer.parseInt(page_products_str);
-                page_views = Integer.parseInt(page_views_str);
+            }
+
+            if(page_trades_str != null) {
                 page_trades = Integer.parseInt(page_trades_str);
             }
 
-            ArrayList<Product> products = ProductController.GetSellerOnShelfProducts(user.getId(), 10, page_products);
-            ArrayList<Records_view> views = OrderController.GetViewRecords(user.getId(), 10, page_views);
-            ArrayList<Records_trade> trades = OrderController.GetTradeRecords(user.getId(), 10, page_trades);
+            if(page_views_str != null) {
+                page_views = Integer.parseInt(page_views_str);
+            }
 
-            ArrayList<Product> products_view = OrderController.GetViewRecordProducts(user.getId(), 10, page_views);
-            ArrayList<Product> products_trade = OrderController.GetTradeRecordProducts(user.getId(), 10, page_trades);
+            ArrayList<Product> products = ProductController.GetSellerOnShelfProducts(user.getId(), 10, page_products);
+            ArrayList<Records_view> views = OrderController.GetViewRecords(user.getId(), 10, 10 * page_views);
+            ArrayList<Records_trade> trades = OrderController.GetTradeRecords(user.getId(), 10, 10 * page_trades);
+
+            ArrayList<Product> products_view = OrderController.GetViewRecordProducts(user.getId(), 10,10 * page_views);
+            ArrayList<Product> products_trade = OrderController.GetTradeRecordProducts(user.getId(), 10, page_trades * 10);
 
             Integer page_sum_products = ProductController.CountSellerOnShelfProducts(user.getId());
             Integer page_sum_views = OrderController.CountViewRecords(user.getId());
@@ -54,7 +60,7 @@ public class Userpage extends HttpServlet {
             req.setAttribute("trades", trades);
             req.setAttribute("products_trade", products_trade);
             req.setAttribute("page_sum_trades", page_sum_trades);
-            req.getRequestDispatcher("jsp/user.jsp").forward(req, resp);
+            req.getRequestDispatcher("/jsp/user.jsp").forward(req, resp);
 
         } catch (Exception e) {
             e.printStackTrace();

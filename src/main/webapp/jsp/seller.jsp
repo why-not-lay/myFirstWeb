@@ -18,6 +18,7 @@
   <body>
     <a href="/logout" >登出</a>
     <a href="/" >back</a>
+    <a href="/shoppingcart" >购物车</a>
 
     <h3>上架商品<h3>
     <% if(products_onshelf == null || products_onshelf.size() == 0){ %>
@@ -61,13 +62,16 @@
     <div>
       <div>==========================================================</div>
       <%Product product = products_soldout.get(i);%>
-      <form action="/seller/update?pid=<%=product.getId()%>" method="post">
+      <form action="/seller/update" method="post">
+        <input type="hidden" name="pid" value="<%=product.getId()%>">
+        <input type="hidden" name="uid" value="<%=user.getId()%>">
         商品名:<input type="text" name="product_name" value="<%=product.getName()%>">
         商品价格:<input type="number" name="product_price" value="<%=product.getPrice()%>">
         商品描述:<input type="text" name="product_description" value="<%=product.getDescription()%>">
         商品数量:<input type="number" name="product_num" value="<%=product.getNum()%>">
         <input type="submit" value="修改">
       </form>
+      <a href="/seller/offshelf?pid=<%=product.getId()%>">下架</a>
       <a href="/item?pid=<%=product.getId()%>">商品页</a>
       <a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a>
       <div>==========================================================</div>
@@ -92,7 +96,9 @@
     <div>
       <div>==========================================================</div>
       <%Product product = products_offshelf.get(i);%>
-      <form action="/seller/update?pid=<%=product.getId()%>" method="post">
+      <form action="/seller/update" method="post">
+        <input type="hidden" name="pid" value="<%=product.getId()%>">
+        <input type="hidden" name="uid" value="<%=user.getId()%>">
         商品名:<input type="text" name="product_name" value="<%=product.getName()%>">
         商品价格:<input type="number" name="product_price" value="<%=product.getPrice()%>">
         商品描述:<input type="text" name="product_description" value="<%=product.getDescription()%>">

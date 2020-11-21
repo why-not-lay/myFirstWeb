@@ -34,13 +34,19 @@ public class ConfirmBuy extends HttpServlet {
             }
 
             List<?> list = (List<?>)req.getSession().getAttribute("products_buy");
+            List<?> list_shopping = (List<?>)req.getSession().getAttribute("shoppings");
             ArrayList<Product> products_buy = new ArrayList<Product>();
+            ArrayList<Records_shopping_cart> shoppings = new ArrayList<Records_shopping_cart>();
             for (Object obj : list) {
                 products_buy.add((Product)obj);
+            }
+            for(Object obj: list_shopping) {
+                shoppings.add((Records_shopping_cart)obj);
             }
             Integer cost_price = (Integer)req.getSession().getAttribute("cost_price");
             req.getSession().removeAttribute("products_buy");
             req.getSession().removeAttribute("cost_price");
+            req.getSession().removeAttribute("shoppings");
 
             if(cost_price == null) {
                 resp.sendRedirect("/index");
@@ -53,11 +59,10 @@ public class ConfirmBuy extends HttpServlet {
                     return;
                 }
             }
-//            req.setAttribute("cost_price", cost_price);
-//            req.setAttribute("products_buy", products_buy);
-
-            // sendemail:  <17-11-20, yourname> //
-            req.getRequestDispatcher("jsp/pay.jsp").forward(req, resp);
+            for (Records_shopping_cart shopping : shoppings) {
+                OrderController.RemoveShoppingCartRecord(shopping.getSid());
+            }
+            req.getRequestDispatcher("/jsp/pay.jsp").forward(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -35,7 +35,7 @@ public class Item extends HttpServlet {
                 OrderController.InsertViewRecord(user.getId(), pid);
             }
             req.setAttribute("product", product);
-            req.getRequestDispatcher("jsp/item.jsp").forward(req, resp);;
+            req.getRequestDispatcher("/jsp/item.jsp").forward(req, resp);;
         } catch (Exception e) {
             e.printStackTrace();
         }

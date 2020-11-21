@@ -9,7 +9,7 @@ import com.myFirstWeb.controller.DatabaseController;
 public class ProductController {
 
     public static int InsertProduct(Product product)throws SQLException,ClassNotFoundException{
-        product.setStatus(Status.Status_products.ON_SHELF);
+        product.setStatus(Status.Status_products.OFF_SHELF);
         DatabaseController.InsertProduct(product);
         return Status.Status_situation.SUCCESSFUL;
     }
@@ -60,10 +60,14 @@ public class ProductController {
 
     public static int OnShelfProduct(long pid)throws SQLException,ClassNotFoundException {
         Product product = DatabaseController.SearchProduct(pid);
-        if(product == null || product.getNum() == 0) {
+        if(product == null ) {
             return Status.Status_situation.NOT_EXIST;
         }
-        product.setStatus(Status.Status_products.ON_SHELF);
+        if(product.getNum() == 0) {
+            product.setStatus(Status.Status_products.SOLD_OUT);
+        } else {
+            product.setStatus(Status.Status_products.ON_SHELF);
+        }
         DatabaseController.UpdateProduct(product);
         DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.USED, Status.Status_records_shopping_cart.OFF_SHLEF);
         return 1;
@@ -75,13 +79,17 @@ public class ProductController {
             return Status.Status_situation.NOT_EXIST;
         }
 
-        DatabaseController.SetShoppingCartRecordsNot(pid, Status.Status_records_shopping_cart.DELETED, Status.Status_records_shopping_cart.DELETED);
+        DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.OFF_SHLEF, Status.Status_records_shopping_cart.USED);
+        DatabaseController.SetShoppingCartRecords(pid, Status.Status_records_shopping_cart.OFF_SHLEF, Status.Status_records_shopping_cart.NOT_ENOUGH);
         product.setStatus(Status.Status_products.OFF_SHELF);
         DatabaseController.UpdateProduct(product);
         return Status.Status_situation.SUCCESSFUL;
     }
 
     public static int UpdateProduct(Product product)throws SQLException,ClassNotFoundException {
+        if(product.getNum() > 0 && product.getStatus() == Status.Status_products.SOLD_OUT) {
+            product.setStatus(Status.Status_products.ON_SHELF);
+        }
         DatabaseController.UpdateProduct(product);
         return Status.Status_situation.SUCCESSFUL;
     }
@@ -95,14 +103,24 @@ public class ProductController {
             return Status.Status_situation.NOT_EXIST;
         }
         product.setNum(num);
+
+        if(num == 0) {
+            product.setStatus(Status.Status_products.SOLD_OUT);
+            UpdateProduct(product);
+        } else if(num > 0 && product.getStatus() == Status.Status_products.SOLD_OUT) {
+            product.setStatus(Status.Status_products.ON_SHELF);
+            UpdateProduct(product);
+        }
+
         DatabaseController.UpdateProduct(product);
-        ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecords(pid, Status.Status_records_shopping_cart.DELETED);
+        ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecordsNot(pid, Status.Status_records_shopping_cart.DELETED);
         for (Records_shopping_cart shopping : shoppings) {
+
             if(num >= shopping.getNum() && shopping.getStatus() == Status.Status_records_shopping_cart.NOT_ENOUGH) {
                 shopping.setStatus(Status.Status_records_shopping_cart.USED);
                 DatabaseController.UpdateShoppingCartRecords(shopping);
             }
-            if(num < shopping.getNum() && shopping.getStatus() != Status.Status_records_shopping_cart.NOT_ENOUGH) {
+            if(num < shopping.getNum() && shopping.getStatus() == Status.Status_records_shopping_cart.USED) {
                 shopping.setStatus(Status.Status_records_shopping_cart.NOT_ENOUGH);
                 DatabaseController.UpdateShoppingCartRecords(shopping);
             }

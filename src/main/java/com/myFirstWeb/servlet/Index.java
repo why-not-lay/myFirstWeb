@@ -29,10 +29,10 @@ public class Index extends HttpServlet {
             if(str_page != null) {
                 page = Integer.parseInt(str_page);
             }
-            ArrayList<Product> products = ProductController.GetProducts(10,page);
+            ArrayList<Product> products = ProductController.GetProducts(10,page * 10);
             req.setAttribute("products",products);
             req.setAttribute("all",all);
-            req.getRequestDispatcher("jsp/index.jsp").forward(req,resp);
+            req.getRequestDispatcher("/jsp/index.jsp").forward(req,resp);
 
         } catch (Exception e) {
             e.printStackTrace();

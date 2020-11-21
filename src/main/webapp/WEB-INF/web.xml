@@ -114,9 +114,9 @@
   </servlet>
   <servlet>
     <description></description>
-    <display-name>RemoveShoppingCartRecord</display-name>
-    <servlet-name>RemoveShoppingCartRecord</servlet-name>
-    <servlet-class>com.myFirstWeb.servlet.RemoveShoppingCartRecord</servlet-class>
+    <display-name>RemoveShoppingCart</display-name>
+    <servlet-name>RemoveShoppingCart</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.RemoveShoppingCart</servlet-class>
   </servlet>
   <servlet>
     <description></description>
@@ -124,14 +124,25 @@
     <servlet-name>ConfirmBuy</servlet-name>
     <servlet-class>com.myFirstWeb.servlet.ConfirmBuy</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>AddShoppingCart</display-name>
+    <servlet-name>AddShoppingCart</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.AddShoppingCart</servlet-class>
+  </servlet>
   
-    
+  
+  <servlet-mapping>
+    <servlet-name>AddShoppingCart</servlet-name>
+    <url-pattern>/addshoppingcart</url-pattern>
+  </servlet-mapping>
+  
   <servlet-mapping>
     <servlet-name>ConfirmBuy</servlet-name>
     <url-pattern>/shoppingcart/pay</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>RemoveShoppingCartRecord</servlet-name>
+    <servlet-name>RemoveShoppingCart</servlet-name>
     <url-pattern>/shoppingcart/remove</url-pattern>
   </servlet-mapping>
   <servlet-mapping>

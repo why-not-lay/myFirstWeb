@@ -46,14 +46,14 @@ public class ShoppingCart extends HttpServlet {
         }
 
         try {
-            ArrayList<Records_shopping_cart> shoppings_used = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.USED,10,page_used );
-            ArrayList<Records_shopping_cart> shoppings_offshelf = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.OFF_SHLEF,10,page_used );
-            ArrayList<Records_shopping_cart> shoppings_not_enough = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.NOT_ENOUGH,10,page_used );
+            ArrayList<Records_shopping_cart> shoppings_used = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.USED,10,page_used*10 );
+            ArrayList<Records_shopping_cart> shoppings_offshelf = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.OFF_SHLEF,10,page_offshelf* 10 );
+            ArrayList<Records_shopping_cart> shoppings_not_enough = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.NOT_ENOUGH,10,page_not_enough*10 );
 
 
-            ArrayList<Product> products_used = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.USED,10, page_used);
-            ArrayList<Product> products_offshelf = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.OFF_SHLEF,10,page_offshelf);
-            ArrayList<Product> products_not_enough = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.NOT_ENOUGH,10, page_not_enough);
+            ArrayList<Product> products_used = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.USED,10, page_used*10);
+            ArrayList<Product> products_offshelf = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.OFF_SHLEF,10,page_offshelf*10);
+            ArrayList<Product> products_not_enough = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.NOT_ENOUGH,10, page_not_enough*10);
 
             Integer sum_used = OrderController.CountShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.USED);
             Integer sum_offshelf = OrderController.CountShoppingCartRecords(user.getId(),Status.Status_records_shopping_cart.OFF_SHLEF);

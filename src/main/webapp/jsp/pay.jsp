@@ -8,7 +8,7 @@ User user = (User)request.getSession().getAttribute("user");
   <body>
     <a href="/index" >返回</a>
     <a href="/seller" >我要卖</a>
-    <a href="#" >购物车</a>
+    <a href="/shoppingcart" >购物车</a>
     <% if(user == null){ %> <a href="/login" >登录</a>
     <%} else {%>
       <a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a>

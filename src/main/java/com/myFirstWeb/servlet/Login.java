@@ -15,6 +15,7 @@ import java.sql.SQLException;
 
 import com.myFirstWeb.controller.UserController;
 import com.myFirstWeb.bean.User;
+import java.util.List;
 
 public class Login extends HttpServlet {
 //    private final UserController user = new UserController();
@@ -23,12 +24,11 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
         if(user != null) {
-//            req.setAttribute("user",user);
-//            req.getRequestDispatcher("jsp/index.jsp").forward(req, resp);
             resp.sendRedirect("/");
-        } else {
-            req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
+            return;
         }
+        req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
+
     }
 
     @Override
@@ -44,7 +44,7 @@ public class Login extends HttpServlet {
 //            req.getRequestDispatcher("jsp/index.jsp").forward(req,resp);
                 resp.sendRedirect("/");
             } else {
-                req.getRequestDispatcher("jsp/login.jsp").forward(req,resp);
+                req.getRequestDispatcher("/jsp/login.jsp").forward(req,resp);
 
             }
 

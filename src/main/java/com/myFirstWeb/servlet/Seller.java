@@ -36,9 +36,9 @@ public class Seller extends HttpServlet {
                 Integer sum_offshelf = ProductController.CountSellerOffShelfProducts(user.getId());
                 Integer sum_soldout = ProductController.CountSellerSoldOutProducts(user.getId());
 
-                ArrayList<Product> products_onshelf = ProductController.GetSellerOnShelfProducts(user.getId(), 10, page_onshlf);
-                ArrayList<Product> products_offshelf = ProductController.GetSellerOffShelfProducts(user.getId(), 10, page_offshelf);
-                ArrayList<Product> products_soldout = ProductController.GetSellerSoldOutProducts(user.getId(), 10, page_soldout);
+                ArrayList<Product> products_onshelf = ProductController.GetSellerOnShelfProducts(user.getId(), 10, page_onshlf * 10);
+                ArrayList<Product> products_offshelf = ProductController.GetSellerOffShelfProducts(user.getId(), 10, page_offshelf * 10);
+                ArrayList<Product> products_soldout = ProductController.GetSellerSoldOutProducts(user.getId(), 10, page_soldout * 10);
 
                 if(page_onshlf_str != null && page_offshelf_str != null && page_soldout_str != null) {
                     page_onshlf = Integer.parseInt(page_onshlf_str);
@@ -54,7 +54,7 @@ public class Seller extends HttpServlet {
                 req.setAttribute("sum_offshelf", sum_offshelf);
                 req.setAttribute("sum_soldout", sum_soldout);
 
-                req.getRequestDispatcher("jsp/seller.jsp").forward(req,resp);
+                req.getRequestDispatcher("/jsp/seller.jsp").forward(req,resp);
 
             } catch (Exception e) {
                 e.printStackTrace();

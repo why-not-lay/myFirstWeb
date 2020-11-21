@@ -11,7 +11,7 @@
     <% if(user != null){ %>
     <a href="/seller" >我要卖</a>
     <a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a>
-    <a href="#" >购物车</a>
+    <a href="/shoppingcart" >购物车</a>
     <h3>welcome <% out.println(user.getName()); %></h3>
     <a href="/logout" >Logout</a>
     <% }else {%>
@@ -28,6 +28,7 @@
       <div><%=product.getDescription()%></div>
       <div><%=product.getPrice()%></div>
       <div><%=product.getNum()%></div>
+      <a href="/addshoppingcart?pid=<%=product.getId()%>&num=1" >添加到购物车</a>
       <a href="/item?pid=<%=product.getId()%>" >商品主页</a>
       <div>======================================</div>
       <%}%>

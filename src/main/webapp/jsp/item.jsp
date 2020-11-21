@@ -16,7 +16,7 @@
     <div><%=product.getDescription()%></div>
     <div><%=product.getPrice()%></div>
     <% if(product.getStatus() == Status.Status_products.ON_SHELF){ %>
-      <form action="#" method="post">
+      <form action="/addshoppingcart" method="post">
         <input type="hidden" name="pid" value="<%=product.getId()%>">
         数量: <input type="num" name="num" value="1" min="1" max="<%=product.getNum()%>">
         <input type="submit" value="添加购物车">

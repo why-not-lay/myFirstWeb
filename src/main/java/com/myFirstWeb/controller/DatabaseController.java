@@ -541,6 +541,7 @@ public class DatabaseController {
                 ps.setObject(2, shopping.getPid());
                 ps.setObject(3, shopping.getNum());
                 ps.setObject(4, shopping.getStatus());
+                ps.setObject(5, shopping.getSid());
                 return ps.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -666,7 +667,7 @@ public class DatabaseController {
     public static Integer CountShoppingCartRecordsNot(long uid, int status)throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select count(*) from records_shopping_cart where status = ? and uid!=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("select count(*) from records_shopping_cart where status != ? and uid =?")) {
                 ps.setObject(1, status);
                 ps.setObject(2, uid);
                 try(ResultSet rs = ps.executeQuery()) {
@@ -729,7 +730,33 @@ public class DatabaseController {
 
     }
 
-    public static ArrayList<Records_shopping_cart> GetShoppingCartRecords(long pid, int status)throws SQLException,ClassNotFoundException {
+    public static ArrayList<Records_shopping_cart> GetShoppingCartRecordsU(long uid, int status)throws SQLException,ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select sid,uid,pid,num,status from records_shopping_cart where uid=? and status = ?")) {
+                ps.setObject(1, uid);
+                ps.setObject(2, status);
+                try(ResultSet rs = ps.executeQuery()) {
+                    ArrayList<Records_shopping_cart> shoppings = new ArrayList<Records_shopping_cart>();
+                    while(rs.next()) {
+                        Records_shopping_cart shopping = new Records_shopping_cart();
+                        shopping.setPid(rs.getLong("pid"));
+                        shopping.setSid(rs.getLong("sid"));
+                        shopping.setUid(rs.getLong("uid"));
+                        shopping.setNum(rs.getInt("num"));
+                        shopping.setStatus(rs.getInt("status"));
+                        shoppings.add(shopping);
+                    }
+                    return shoppings;
+
+                }
+
+            }
+        }
+
+    }
+
+    public static ArrayList<Records_shopping_cart> GetShoppingCartRecordsP(long pid, int status)throws SQLException,ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
             try(PreparedStatement ps = conn.prepareStatement("select sid,uid,pid,num,status from records_shopping_cart where pid=? and status = ?")) {
@@ -882,7 +909,7 @@ public class DatabaseController {
 
 
     public static ArrayList<Records_shopping_cart> GetShoppingCartRecords(long uid, long pid, int status)throws SQLException, ClassNotFoundException {
-        Class.forName(JDBC_URL);
+        Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
             try(PreparedStatement ps = conn.prepareStatement("select sid, uid, pid, num, status from records_shopping_cart where status = ? and uid=? and pid=?")) {
                 ps.setObject(1, status);
@@ -892,7 +919,7 @@ public class DatabaseController {
                     ArrayList<Records_shopping_cart> shoppings = new ArrayList<Records_shopping_cart>();
                     while(rs.next()) {
                         Records_shopping_cart shopping = new Records_shopping_cart();
-                        shopping.setNum(rs.getInt("int"));
+                        shopping.setNum(rs.getInt("num"));
                         shopping.setSid(rs.getLong("sid"));
                         shopping.setUid(rs.getLong("uid"));
                         shopping.setPid(rs.getLong("pid"));
@@ -908,9 +935,9 @@ public class DatabaseController {
     }
 
     public static ArrayList<Records_shopping_cart> GetShoppingCartRecordsNot(long uid, long pid, int status)throws SQLException, ClassNotFoundException {
-        Class.forName(JDBC_URL);
+        Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("select sid, uid, pid, num, status from records_shopping_cart where status = ? and uid=? and pid != ?")) {
+            try(PreparedStatement ps = conn.prepareStatement("select sid, uid, pid, num, status from records_shopping_cart where status != ? and uid=? and pid = ?")) {
                 ps.setObject(1, status);
                 ps.setObject(2, uid);
                 ps.setObject(3, pid);
@@ -918,7 +945,7 @@ public class DatabaseController {
                     ArrayList<Records_shopping_cart> shoppings = new ArrayList<Records_shopping_cart>();
                     while(rs.next()) {
                         Records_shopping_cart shopping = new Records_shopping_cart();
-                        shopping.setNum(rs.getInt("int"));
+                        shopping.setNum(rs.getInt("num"));
                         shopping.setSid(rs.getLong("sid"));
                         shopping.setUid(rs.getLong("uid"));
                         shopping.setPid(rs.getLong("pid"));

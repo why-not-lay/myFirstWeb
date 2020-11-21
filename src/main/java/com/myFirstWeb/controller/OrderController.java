@@ -24,7 +24,7 @@ public class OrderController {
 
     public static int InsertShoppingCartRecord(long uid, long pid,int num)throws SQLException, ClassNotFoundException {
         Records_shopping_cart shopping = null;
-        ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecordsNot(uid, pid, Status.Status_records_shopping_cart.DELETED);
+        ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecords(uid, pid, Status.Status_records_shopping_cart.USED);
         if(shoppings.size()==1) {
             shopping = shoppings.get(0);
             int flag = UpdateShoppingNum(shopping.getSid(), num + shopping.getNum());
@@ -53,9 +53,14 @@ public class OrderController {
             return Status.Status_situation.NOT_EXIST;
         }
         Product product = DatabaseController.SearchProduct(shopping.getPid());
-        if(product == null || product.getNum() < num) {
+        if(product == null) {
             return Status.Status_situation.FAILED;
         }
+
+        if(product.getNum() < num) {
+            num = product.getNum();
+        }
+
         shopping.setNum(num);
         DatabaseController.UpdateShoppingCartRecords(shopping);
         return Status.Status_situation.SUCCESSFUL;
@@ -85,6 +90,7 @@ public class OrderController {
             return Status.Status_situation.NOT_EXIST;
         }
         Records_trade trade = new Records_trade();
+        ProductController.UpdateProductNum(pid, product.getNum()-num);
         trade.setPid(pid);
         trade.setUid_buyer(uid);
         trade.setUid_seller(product.getUid());
@@ -153,7 +159,7 @@ public class OrderController {
     }
 
     public static ArrayList<Records_shopping_cart> GetSelected(long uid) throws SQLException,ClassNotFoundException  {
-        return DatabaseController.GetShoppingCartRecords(uid, Status.Status_records_shopping_cart.USED);
+        return DatabaseController.GetShoppingCartRecordsU(uid, Status.Status_records_shopping_cart.USED);
     }
 
     public static Records_shopping_cart SearchShoppingCartRecord(long sid, int status)throws SQLException, ClassNotFoundException {

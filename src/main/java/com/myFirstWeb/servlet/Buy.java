@@ -27,7 +27,8 @@ public class Buy extends HttpServlet {
             String sid_str = req.getParameter("sid");
             int sid = -1;
             ArrayList<Records_shopping_cart> shoppings = null;
-            if(sid_str == null) {
+
+            if(sid_str != null) {
                 sid = Integer.parseInt(sid_str);
                 shoppings = new ArrayList<Records_shopping_cart>();
                 Records_shopping_cart shopping = OrderController.SearchShoppingCartRecord(sid, Status.Status_records_shopping_cart.USED);
@@ -54,12 +55,10 @@ public class Buy extends HttpServlet {
                 }
             }
             req.getSession().setAttribute("products_buy", products);
+            req.getSession().setAttribute("shoppings", shoppings);
             req.getSession().setAttribute("cost_price",(Integer)cost_price);
-//            if(sid != -1) {
-//                req.getSession().setAttribute("sid", (Integer)sid);
-//            }
-            req.getRequestDispatcher("jsp/buy.jsp").forward(req, resp);
 
+            req.getRequestDispatcher("/jsp/buy.jsp").forward(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
         }

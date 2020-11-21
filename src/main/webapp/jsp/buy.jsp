@@ -12,7 +12,7 @@ Integer cost_price = (Integer)request.getSession().getAttribute("cost_price");
   <body>
     <a href="/index" >返回</a>
     <a href="/seller" >我要卖</a>
-    <a href="#" >购物车</a>
+    <a href="/shoppingcart" >购物车</a>
     <% if(user == null){ %> <a href="/login" >登录</a>
     <%} else {%>
       <a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a>
@@ -20,7 +20,7 @@ Integer cost_price = (Integer)request.getSession().getAttribute("cost_price");
 
     <h3>订单详情</h3>
     <%for (int i = 0; i < products.size(); i++){%>
-    <% Product product = =products.get(i); %>
+    <% Product product = products.get(i); %>
       <div>========================================</div>
       商品名:<div><%=product.getName()%></div>
       商品单价:<div><%=product.getPrice()%></div>
