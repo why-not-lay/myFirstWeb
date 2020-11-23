@@ -53,7 +53,7 @@ public class ConfirmBuy extends HttpServlet {
                 return;
             }
             for (Product product : products_buy) {
-                int flag = OrderController.InsertTradeRecord(product.getUid(), product.getId(), product.getNum());
+                int flag = OrderController.InsertTradeRecord(user.getId(), product.getId(), product.getNum());
                 if(flag == 0) {
                     resp.sendRedirect("/shoppingcart");
                     return;

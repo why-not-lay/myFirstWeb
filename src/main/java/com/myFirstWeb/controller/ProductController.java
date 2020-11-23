@@ -18,6 +18,10 @@ public class ProductController {
         return DatabaseController.SearchProduct(pid);
     }
 
+    public static ArrayList<Product> SearchProducts(String content)throws SQLException, ClassNotFoundException {
+        return DatabaseController.SearchProduct(content,Status.Status_products.ON_SHELF);
+    }
+
     public static ArrayList<Product> GetSellerOnShelfProducts(long uid, int num, int page)throws SQLException,ClassNotFoundException{
         return DatabaseController.GetSellerProducts(uid, Status.Status_products.ON_SHELF, num, page);
     }

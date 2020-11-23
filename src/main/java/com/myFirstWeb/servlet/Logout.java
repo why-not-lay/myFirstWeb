@@ -34,7 +34,7 @@ public class Logout extends HttpServlet {
         if(user != null) {
             req.getSession().removeAttribute("user");
         }
-        resp.sendRedirect("/");
+        resp.sendRedirect("/index");
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

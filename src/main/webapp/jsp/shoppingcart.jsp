@@ -17,74 +17,140 @@ Integer sum_offshelf = (Integer)request.getAttribute("sum_offshelf");
 Integer sum_not_enough = (Integer)request.getAttribute("sum_not_enough");
 %>
 <html>
+  <head>
+    <link rel="stylesheet" href="/css/shoppingcart.css">
+    <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="/css/topbar.css">
+  </head>
   <body>
-    <a href="/index" >返回</a>
-    <a href="/seller" >我要卖</a>
-    <% if(user == null){ %> <a href="/login" >登录</a>
+    <div id="topbar">
+      <div>
+        <ul>
+    <% if(user == null){ %> 
+    <li><a href="/login" >登录</a></li>
     <%} else {%>
-      <a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a>
+    <li><a href="/index" >主页</a></li>
+    <li><a href="/seller" >我要卖</a></li>
+    <li><a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a></li>
+    <li><a href="/logout" >登出</li>
     <%}%>
-    	
-    <h3>购物车</h3>
+        </ul>
+      </div>
+    </div>
+    
+    
+    <hr>
+    <h1>购物车</h1>
+    <hr>
     <% if(shoppings_used != null && shoppings_used.size() != 0){ %>
+    <table class="products">
+      <tr>
+        <th>商品名</th>
+        <th>商品价格</th>
+        <th>购买数量</th>
+        <th colspan="2">功能</th>
+        <th><a id="buy_all" href="/shoppingcart/buy">购买全部</a></th>
+
+      </tr>
         <%for (int i = 0; i < shoppings_used.size(); i++){%>
           <% Product product = products_used.get(i); %>
           <% Records_shopping_cart shopping = shoppings_used.get(i); %>
-      <div>
-        <div>=======================</div>
-        <div><%=product.getName()%></div>
-        <div><%=product.getPrice()%></div>
-        <div><%=shopping.getNum()%></div>
-        <a href="/shoppingcart/buy?sid=<%=shopping.getSid()%>">购买</a>
-        <a href="/item?pid=<%=product.getId()%>">商品链接</a>
-        <a href="/shoppingcart/remove?sid=<%=shopping.getSid()%>">删除</a>
-        <div>=======================</div>
-      </div>
+      <tr>
+        <th><%=product.getName()%></th>
+        <th><%=product.getPrice()%></th>
+        <th><%=shopping.getNum()%></th>
+        <th class="func"><a href="/shoppingcart/remove?sid=<%=shopping.getSid()%>">删除</a></th>
+        <th class="func"><a href="/item?pid=<%=product.getId()%>">商品页</a></th>
+        <th class="func"><a href="/shoppingcart/buy?sid=<%=shopping.getSid()%>">购买</a></th>
+      </tr>
         <%}%>
+    </table>
+    <div class="page">
+      <ul>
+        <% if(sum_used == null){ %>
+        <li><a href="/shoppingcart?page_used=0" >1</a></li>
+        <%} else {%>
+        <% int all_page = sum_used/10; %>
+        <%for (int i = 0; i <= all_page; i++){%>
+        <li><a href="/shoppingcart?page_used=<%=i%>" ><%=i+1%></a></li>
+        <%}%>
+      <%}%>
+      </ul>
+    </div>
+    <%} else {%>
+    <h1>购物车已经清空</h1>
     <%}%>
-
+    
     <% if(shoppings_not_enough != null && shoppings_not_enough.size() != 0){ %>
-    <h3>缺货中</h3>
+    <h2>缺货中</h2>
+    <table class="products">
+      <tr>
+        <th>商品名</th>
+        <th>商品价格</th>
+        <th>购买数量</th>
+        <th colspan="3">功能</th>
+      </tr>
         <%for (int i = 0; i < shoppings_not_enough.size(); i++){%>
           <% Product product = products_not_enough.get(i); %>
           <% Records_shopping_cart shopping = shoppings_not_enough.get(i); %>
-      <div>
-        <div>=======================</div>
-        <div><%=product.getName()%></div>
-        <div><%=product.getPrice()%></div>
-        <div><%=shopping.getNum()%></div>
-        <a href="/item?pid=<%=product.getId()%>">商品链接</a>
-        <a href="/shoppingcart/remove?sid=<%=shopping.getSid()%>">删除</a>
-        <div>=======================</div>
-      </div>
+      <tr>
+        <th><%=product.getName()%></th>
+        <th><%=product.getPrice()%></th>
+        <th><%=shopping.getNum()%></th>
+        <th class="func"><a href="/item?pid=<%=product.getId()%>">商品页</a></th>
+        <th class="func"><a href=/shoppingcart/remove?sid=<%=shopping.getSid()%>"">删除</a></th>
+      </tr>
         <%}%>
+    </table>
+    <div class="page">
+      <ul>
+        <% if(sum_not_enough == null){ %>
+        <li><a href="/shoppingcart?sum_not_enough=0" >1</a></li>
+        <%} else {%>
+        <% int all_page = sum_not_enough/10; %>
+        <%for (int i = 0; i <= all_page; i++){%>
+        <li><a href="/shoppingcart?sum_not_enough=<%=i%>" ><%=i+1%></a></li>
+        <%}%>
+      <%}%>
+      </ul>
+    </div>
     <%}%>
-    
+
+
+
     <% if(shoppings_offshelf != null && shoppings_offshelf.size() != 0){ %>
-    <h3>已经下架</h3>
+    <h2>已经下架</h2>
+    <table class="products">
+      <tr>
+        <th>商品名</th>
+        <th>商品价格</th>
+        <th>购买数量</th>
+        <th colspan="3">功能</th>
+      </tr>
         <%for (int i = 0; i < shoppings_offshelf.size(); i++){%>
           <% Product product = products_offshelf.get(i); %>
           <% Records_shopping_cart shopping = shoppings_offshelf.get(i); %>
-      <div>
-        <div>=======================</div>
-        <div><%=product.getName()%></div>
-        <div><%=product.getPrice()%></div>
-        <div><%=shopping.getNum()%></div>
-        <a href="/item?pid=<%=product.getId()%>">商品链接</a>
-        <a href="/shoppingcart/remove?sid=<%=shopping.getSid()%>">删除</a>
-        <div>=======================</div>
-      </div>
+      <tr>
+        <th><%=product.getName()%></th>
+        <th><%=product.getPrice()%></th>
+        <th><%=shopping.getNum()%></th>
+        <th class="func"><a href="/item?pid=<%=product.getId()%>">商品主页</a></th>
+        <th class="func"><a href="/shoppingcart/remove?sid=<%=shopping.getSid()%>">删除</a></th>
+      </tr>
         <%}%>
-    <%}%>
-
-    <% if(shoppings_used.size() != 0){ %>
-      <a href="/shoppingcart/buy">购买全部</a>
-    <%} else {%>
-      <% if(user == null){ %>
-      <h3>要登录才能加入购物车</h3>
-      <%} else {%>
-      <h3>购物车已经清空</h3>
+    </table>
+    <div class="page">
+      <ul>
+        <% if(sum_offshelf == null){ %>
+        <li><a href="/shoppingcart?sum_offshelf=0" >1</a></li>
+        <%} else {%>
+        <% int all_page = sum_offshelf/10; %>
+        <%for (int i = 0; i <= all_page; i++){%>
+        <li><a href="/shoppingcart?sum_offshelf=<%=i%>" ><%=i+1%></a></li>
+        <%}%>
       <%}%>
+      </ul>
+    </div>
     <%}%>
     
   </body>

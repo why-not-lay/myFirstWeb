@@ -1,0 +1,39 @@
+*{
+  margin: 0;
+  padding:0;
+}
+h1,h2{
+  text-align:center;
+  margin: 20px;
+}
+
+.page {
+  top:40%;
+  width:400px;
+  margin:0 auto;
+  font-size:20px;
+}
+
+.page ul{
+  list-style-type: none;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+}
+
+.page li{
+  display:inline-block;
+  width:10%;
+}
+
+.page a{
+  text-decoration:none;
+  font-weight:bold;
+  color:black;
+}
+
+.page a:hover{
+  color:white;
+  background-color:#a0a0a0;
+}
+

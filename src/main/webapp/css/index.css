@@ -1,0 +1,109 @@
+*{
+  margin:0;
+  padding:0;
+}
+
+#search{
+  width:40%;
+  margin:0 auto;
+  position: relative;
+  top:20%;
+}
+
+#search input[type=text]{
+  width:80%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size:16px;
+  background-color:white;
+  background-image: url('https://static.runoob.com/images/mix/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+
+}
+
+#search input[type=submit]{
+  font-size:16px;
+  display:inline-block;
+  width:15%;
+}
+
+#container{
+  margin:0 auto;
+  width:1350px;
+  position: relative;
+  top: 30%;
+}
+
+#container h1{
+  text-align:center;
+}
+
+#container .product{
+  display:inline-block;
+  width:400px;
+  margin:10px;
+  background-color:rgba(228, 228, 228, 0.2);
+  padding:5px;
+  border-radius:10px;
+  text-align:right;
+  font-size:20px;
+}
+
+#container .product a{
+  display:inline-block;
+  text-decoration:none;
+  color:#a0a0a0;
+  font-weight:bold;
+  padding:5px;
+}
+
+
+#container .product:hover{
+  box-shadow: 0 0 20px #ccc;
+}
+
+#container .product img{
+  width:400px;
+  height: 300px;
+}
+
+#page {
+  position:relative;
+  top:40%;
+  width:400px;
+  margin:0 auto;
+  font-size:20px;
+}
+
+#page ul{
+  list-style-type: none;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+}
+
+#page li{
+  display:inline-block;
+  width:10%;
+}
+
+#page a{
+  text-decoration:none;
+  font-weight:bold;
+  color:black;
+}
+
+#page a:hover{
+  color:white;
+  background-color:#a0a0a0;
+}
+
+#footer{
+  position: relative;
+  top:40%;
+  height:250px;
+  width:100%;
+}

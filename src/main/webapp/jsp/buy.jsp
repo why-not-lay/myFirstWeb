@@ -9,31 +9,52 @@ Integer cost_price = (Integer)request.getSession().getAttribute("cost_price");
 
 %>
 <html>
+  <head>
+    <link rel="stylesheet" href="/css/topbar.css">
+    <link rel="stylesheet" href="/css/buy.css">
+    <link rel="stylesheet" href="/css/product.css">
   <body>
-    <a href="/index" >返回</a>
-    <a href="/seller" >我要卖</a>
-    <a href="/shoppingcart" >购物车</a>
-    <% if(user == null){ %> <a href="/login" >登录</a>
-    <%} else {%>
-      <a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a>
-    <%}%>
+    <div id="topbar">
+      <div>
+        <ul>
+          <li><a href="/index" >主页</a></li>
+          <li><a href="/seller" >我要卖</a></li>
+          <li><a href="/shoppingcart" >购物车</a></li>
+          <li><a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a></li>
+        </ul>
+      </div>
+    </div>
+    
 
-    <h3>订单详情</h3>
+    <div id="content">
+      <h2>订单详情</h2>
+      <table class="products">
+        <tr>
+          <th>商品名</th>
+          <th>商品单价</th>
+          <th>购买数量</th>
+          <th>总价格</th>
+        </tr>
     <%for (int i = 0; i < products.size(); i++){%>
     <% Product product = products.get(i); %>
-      <div>========================================</div>
-      商品名:<div><%=product.getName()%></div>
-      商品单价:<div><%=product.getPrice()%></div>
-      购买数目:<div><%=product.getNum()%></div>
-      商品总价:<div><% out.println(product.getPrice() * product.getNum()); %></div>
-      <div>========================================</div>
+        <tr>
+          <th><%=product.getName()%></th>
+          <th><%=product.getPrice()%></th>
+          <th><%=product.getNum()%></th>
+          <th><% out.println(product.getPrice() * product.getNum()); %></th>
+        </tr>
     <%}%>
-    <h3>应付价格</h3>
-    <div><%=cost_price%></div>
-    <a href="/shoppingcart/pay?delete=1">取消订单</a>
-    <h3>支付方式</h3>
-    <a href="/shoppingcart/pay">微信</a>
-    <a href="/shoppingcart/pay">支付宝</a>
-    <a href="/shoppingcart/pay">货到付款</a>
+        <th colspan="2">总花费</th>
+        <th ><%=cost_price%></th>
+        <th ><a href="/shoppingcart/pay?delete=1">取消订单</a></th>
+      </table>
+      <h2>支付方式</h2>
+
+      <div id="pay">
+        <a href="/shoppingcart/pay">微信</a>
+        <a href="/shoppingcart/pay">支付宝</a>
+        <a href="/shoppingcart/pay">货到付款</a>
+      </div>
+    </div>
   </body>
 </html>

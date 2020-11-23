@@ -1,0 +1,23 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+h2{
+  text-align:center;
+}
+
+#pay{
+  text-align:center;
+}
+
+#pay a{
+  text-decoration: none;
+  font-size:20px;
+  padding:10px;
+}
+
+#content{
+  top:20%;
+  position: relative;
+}

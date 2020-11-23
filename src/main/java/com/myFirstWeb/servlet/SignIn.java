@@ -31,7 +31,7 @@ public class SignIn extends HttpServlet {
                 request.setAttribute("user",user);
             }
 //        request.getRequestDispatcher("jsp/index.jsp").forward(request,response);
-            response.sendRedirect("/");
+            response.sendRedirect("/index");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,7 +44,7 @@ public class SignIn extends HttpServlet {
         if(user != null) {
 //            req.setAttribute("user",user);
 //            req.getRequestDispatcher("jsp/index.jsp").forward(req, resp);
-            resp.sendRedirect("/");
+            resp.sendRedirect("/index");
         } else {
             req.getRequestDispatcher("/jsp/signin.jsp").forward(req,resp);
         }

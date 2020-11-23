@@ -1,0 +1,80 @@
+*{
+  margin:0;
+  padding:0;
+  background-color: #a0a0a0;
+}
+#topbar{
+  border-bottom: 1px solid #ddd;
+  background-color: #e3e4e5
+}
+#topbar_l{
+  display:block;
+
+}
+
+
+#signin{
+  width:300px;
+  padding:20px;
+  text-align:center;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  overflow:hidden;
+}
+
+#signin h2{
+  margin-top:100px;
+  color:#fff;
+  font-size:40px;
+}
+
+#signin input{
+  display: block;
+  width:100%;
+  padding:0 16px;
+  height:44px;
+  text-align:center;
+  box-sizing:border-box;
+  outline:none;
+  border:none;
+}
+
+#signin a{
+  text-decoration:none;
+  color:#fff;
+  font-size:14px;
+  padding:10px;
+  transition:0.8s;
+  display:block;
+}
+
+#signin a:hover{
+  background:rgba(0,0,0,.3);
+}
+
+#signin div{
+  display:inline-block;
+}
+
+.sign-text{
+  margin:4px;
+  background:rgba(255,255,255,5);
+  border-radius:6px;
+}
+
+.sign-btn{
+  margin-top:50px;
+  margin-bottom:20px;
+  background:#487eb0;
+  color:#fff;
+  border-radius:44px;
+  cursor: pointer;
+  transition:0.8s
+}
+
+.sign-btn.hover{
+  transform:scale(0.96);
+}
+

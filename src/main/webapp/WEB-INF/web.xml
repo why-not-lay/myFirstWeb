@@ -130,13 +130,28 @@
     <servlet-name>AddShoppingCart</servlet-name>
     <servlet-class>com.myFirstWeb.servlet.AddShoppingCart</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>Search</display-name>
+    <servlet-name>Search</servlet-name>
+    <servlet-class>com.myFirstWeb.servlet.Search</servlet-class>
+  </servlet>
   
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.css</url-pattern>
+  </servlet-mapping>
   
+
+  <servlet-mapping>
+    <servlet-name>Search</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>AddShoppingCart</servlet-name>
     <url-pattern>/addshoppingcart</url-pattern>
   </servlet-mapping>
-  
   <servlet-mapping>
     <servlet-name>ConfirmBuy</servlet-name>
     <url-pattern>/shoppingcart/pay</url-pattern>
@@ -169,10 +184,6 @@
     <servlet-name>OnShelf</servlet-name>
     <url-pattern>/seller/onshelf</url-pattern>
   </servlet-mapping>
-  
-  
-  
-  
   <servlet-mapping>
     <servlet-name>UpdateProduct</servlet-name>
     <url-pattern>/seller/update</url-pattern>
@@ -205,16 +216,13 @@
     <servlet-name>Item</servlet-name>
     <url-pattern>/item</url-pattern>
   </servlet-mapping>
-  
-
-  <servlet-mapping>
-    <servlet-name>Index</servlet-name>
-    <url-pattern>/index</url-pattern>
-  </servlet-mapping>
-  
   <servlet-mapping>
     <servlet-name>Index</servlet-name>
     <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Index</servlet-name>
+    <url-pattern>/index</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
@@ -228,7 +236,5 @@
     <servlet-name>SignIn</servlet-name>
     <url-pattern>/signin</url-pattern>
   </servlet-mapping>
-  
-  
-  
+    
 </web-app>

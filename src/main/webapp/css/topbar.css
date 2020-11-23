@@ -1,0 +1,47 @@
+*{
+  margin:0;
+  padding:0;
+}
+#topbar{
+  height:auto;
+  width:100%;
+  background:#a0a0a0;
+  top: 0;
+}
+
+#topbar ul{
+  list-style-type: none;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+}
+
+#topbar li{
+  float:right;
+  padding: 0;
+  margin:0;
+  border-right: 1px solid white;
+}
+#topbar li:last-child{
+  border-right: none;
+}
+
+#topbar li a{
+  font-weight:bold;
+  display:block;
+  padding:0;
+  width:120px;
+  text-align:center;
+  font-size:25px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+#topbar li a:link,#topbar li a:visited{
+  color: white;
+}
+
+#topbar li a:hover{
+  color:#a0a0a0 ;
+  background:white;
+}
+

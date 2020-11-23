@@ -15,120 +15,175 @@
     Integer sum_soldout = (Integer)request.getAttribute("sum_soldout");
 
   %>
+  <head>
+    <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="/css/shoppingcart.css">
+    <link rel="stylesheet" href="/css/topbar.css">
+    <style type="text/css" >
+#add{
+  text-align:center;
+  font-size:25px;
+}
+    </style>
+  </head>
   <body>
-    <a href="/logout" >登出</a>
-    <a href="/" >back</a>
-    <a href="/shoppingcart" >购物车</a>
-
-    <h3>上架商品<h3>
-    <% if(products_onshelf == null || products_onshelf.size() == 0){ %>
-    <div>当前没有商品</div>
-    <%} else {%>
-      <%for (int i = 0; i < products_onshelf.size(); i++){%>
-    <div>
-      <div>==========================================================</div>
-      <%Product product = products_onshelf.get(i);%>
-      <form action="seller/update" method="post">
-        <input type="hidden" name="pid" value="<%=product.getId()%>">
-        <input type="hidden" name="uid" value="<%=user.getId()%>">
-        商品名:<input type="text" name="product_name" value="<%=product.getName()%>">
-        商品价格:<input type="number" name="product_price" value="<%=product.getPrice()%>">
-        商品描述:<input type="text" name="product_description" value="<%=product.getDescription()%>">
-        商品数量:<input type="number" name="product_num" value="<%=product.getNum()%>">
-        <input type="submit" value="修改">
-      </form>
-      <a href="/seller/offshelf?pid=<%=product.getId()%>">下架</a>
-      <a href="/item?pid=<%=product.getId()%>">商品页</a>
-      <a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a>
-      <div>==========================================================</div>
+    <div id="topbar">
+      <div>
+        <ul>
+          <li><a href="/logout" >登出</a></li>
+          <li><a href="/" >back</a></li>
+          <li><a href="/shoppingcart" >购物车</a></li>
+        </ul>
+      </div>
     </div>
+    
+    
+    <h2>上架商品</h2>
+    <% if(products_onshelf == null || products_onshelf.size() == 0){ %>
+    <h2>当前没有商品</h2>
+    <%} else {%>
+    <table class="products">
+      <tr>
+        <th>商品名</th>
+        <th>商品描述</th>
+        <th>商品价格</th>
+        <th>商品数目</th>
+        <th colspan="4">功能</th>
+      </tr>
+      <%for (int i = 0; i < products_onshelf.size(); i++){%>
+      <%Product product = products_onshelf.get(i);%>
+      <tr>
+        <form action="/seller/update" method="post">
+          <input type="hidden" name="pid" value="<%=product.getId()%>">
+          <input type="hidden" name="uid" value="<%=user.getId()%>">
+          <th><input type="text" name="product_name" value="<%=product.getName()%>"></th>
+          <th><input type="text" name="product_description" value="<%=product.getDescription()%>"></th>
+          <th><input type="number" name="product_price" value="<%=product.getPrice()%>"></th>
+          <th><input type="number" name="product_num" value="<%=product.getNum()%>"></th>
+          <th class="func"><a href="/seller/offshelf?pid=<%=product.getId()%>">下架</a></th>
+          <th class="func"><a href="/item?pid=<%=product.getId()%>">商品页</a></th>
+          <th class="func"><a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a></th>
+          <th><input type="submit" value="修改"></th>
+        </form>
+      </tr>
       <%}%>
+    </table>
+    <div class="page">
+      <ul>
       <% if(sum_onshelf == null){ %>
-        <a href="/seller?page_onshlf=0" >1</a>
+      <li><a href="/user?uid=<%=user.getId()%>&page_onshlf=0" >1</a></li>
       <%} else {%>
         <% int all_page = sum_onshelf/10; %>
         <%for (int i = 0; i <= all_page; i++){%>
-          <a href="/seller?page_onshlf=<%=i%>" ><%=i+1%></a>
+            <li><a href="/user?uid=<%=user.getId()%>&page_onshlf=<%=i%>" ><%=i+1%></a></li>
         <%}%>
       <%}%>
-    <%}%>
-
-
-    <h3>售完商品</h3>
-    <% if(products_soldout == null || products_soldout.size() == 0){ %>
-    <div>当前没有商品</div>
-    <%} else {%>
-      <%for (int i = 0; i < products_soldout.size(); i++){%>
-    <div>
-      <div>==========================================================</div>
-      <%Product product = products_soldout.get(i);%>
-      <form action="/seller/update" method="post">
-        <input type="hidden" name="pid" value="<%=product.getId()%>">
-        <input type="hidden" name="uid" value="<%=user.getId()%>">
-        商品名:<input type="text" name="product_name" value="<%=product.getName()%>">
-        商品价格:<input type="number" name="product_price" value="<%=product.getPrice()%>">
-        商品描述:<input type="text" name="product_description" value="<%=product.getDescription()%>">
-        商品数量:<input type="number" name="product_num" value="<%=product.getNum()%>">
-        <input type="submit" value="修改">
-      </form>
-      <a href="/seller/offshelf?pid=<%=product.getId()%>">下架</a>
-      <a href="/item?pid=<%=product.getId()%>">商品页</a>
-      <a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a>
-      <div>==========================================================</div>
+      </ul>
     </div>
+    <%}%>
+    
+
+
+    <h2>售完商品</h2>
+    <% if(products_soldout == null || products_soldout.size() == 0){ %>
+    <h2>当前没有商品</h2>
+    <%} else {%>
+    <table class="products">
+      <tr>
+        <th>商品名</th>
+        <th>商品描述</th>
+        <th>商品价格</th>
+        <th>商品数目</th>
+        <th colspan="4">功能</th>
+      </tr>
+      <%for (int i = 0; i < products_soldout.size(); i++){%>
+      <%Product product = products_soldout.get(i);%>
+      <tr>
+        <form action="/seller/update" method="post">
+          <input type="hidden" name="pid" value="<%=product.getId()%>">
+          <input type="hidden" name="uid" value="<%=user.getId()%>">
+          <th><input type="text" name="product_name" value="<%=product.getName()%>"></th>
+          <th><input type="text" name="product_description" value="<%=product.getDescription()%>"></th>
+          <th><input type="number" name="product_price" value="<%=product.getPrice()%>"></th>
+          <th><input type="number" name="product_num" value="<%=product.getNum()%>"></th>
+          <th class="func"><a href="/seller/offshelf?pid=<%=product.getId()%>">下架</a></th>
+          <th class="func"><a href="/item?pid=<%=product.getId()%>">商品页</a></th>
+          <th class="func"><a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a></th>
+          <th><input type="submit" value="修改"></th>
+        </form>
+      </tr>
       <%}%>
+    </table>
+    <div class="page">
+      <ul>
       <% if(sum_soldout == null){ %>
-        <a href="/seller?page_soldout=0" >1</a>
+      <li><a href="/user?uid=<%=user.getId()%>&page_soldout=0" >1</a></li>
       <%} else {%>
         <% int all_page = sum_soldout/10; %>
         <%for (int i = 0; i <= all_page; i++){%>
-          <a href="/seller?page_soldout=<%=i%>" ><%=i+1%></a>
+            <li><a href="/user?uid=<%=user.getId()%>&page_soldout=<%=i%>" ><%=i+1%></a></li>
         <%}%>
       <%}%>
+      </ul>
+    </div>
     <%}%>
 
 
-    <h3>下架商品</h3>
+    <h2>下架商品</h2>
     <% if(products_offshelf == null || products_offshelf.size() == 0){ %>
-    <div>当前没有商品</div>
+    <h2>当前没有商品</h2>
     <%} else {%>
+    <table class="products">
+      <tr>
+        <th>商品名</th>
+        <th>商品描述</th>
+        <th>商品价格</th>
+        <th>商品数目</th>
+        <th colspan="4">功能</th>
+      </tr>
       <%for (int i = 0; i < products_offshelf.size(); i++){%>
-    <div>
-      <div>==========================================================</div>
       <%Product product = products_offshelf.get(i);%>
-      <form action="/seller/update" method="post">
-        <input type="hidden" name="pid" value="<%=product.getId()%>">
-        <input type="hidden" name="uid" value="<%=user.getId()%>">
-        商品名:<input type="text" name="product_name" value="<%=product.getName()%>">
-        商品价格:<input type="number" name="product_price" value="<%=product.getPrice()%>">
-        商品描述:<input type="text" name="product_description" value="<%=product.getDescription()%>">
-        商品数量:<input type="number" name="product_num" value="<%=product.getNum()%>">
-        <input type="submit" value="修改">
-      </form>
-      <a href="/seller/onshelf?pid=<%=product.getId()%>">上架</a>
-      <a href="/item?pid=<%=product.getId()%>">商品页</a>
-      <a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a>
-      <div>==========================================================</div>
-    </div>
+      <tr>
+        <form action="/seller/update" method="post">
+          <input type="hidden" name="pid" value="<%=product.getId()%>">
+          <input type="hidden" name="uid" value="<%=user.getId()%>">
+          <th><input type="text" name="product_name" value="<%=product.getName()%>"></th>
+          <th><input type="text" name="product_description" value="<%=product.getDescription()%>"></th>
+          <th><input type="number" name="product_price" value="<%=product.getPrice()%>"></th>
+          <th><input type="number" name="product_num" value="<%=product.getNum()%>"></th>
+          <th class="func"><a href="/seller/offshelf?pid=<%=product.getId()%>">下架</a></th>
+          <th class="func"><a href="/item?pid=<%=product.getId()%>">商品页</a></th>
+          <th class="func"><a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a></th>
+          <th><input type="submit" value="修改"></th>
+        </form>
+      </tr>
       <%}%>
+    </table>
+    <div class="page">
+      <ul>
       <% if(sum_offshelf == null){ %>
-        <a href="/seller?page_offshelf=0" >1</a>
+      <li><a href="/user?uid=<%=user.getId()%>&page_offshelf=0" >1</a></li>
       <%} else {%>
         <% int all_page = sum_offshelf/10; %>
         <%for (int i = 0; i <= all_page; i++){%>
-          <a href="/seller?page_offshelf=<%=i%>" ><%=i+1%></a>
+            <li><a href="/user?uid=<%=user.getId()%>&page_offshelf=<%=i%>" ><%=i+1%></a></li>
         <%}%>
       <%}%>
+      </ul>
+    </div>
     <%}%>
 
 
-    <h3>添加商品</h3>
-    <form action="seller/add" method="post">
-      商品名:<input type="text" name="product_name">
-      商品价格:<input type="number" name="product_price">
-      商品描述:<input type="text" name="product_description">
-      商品数量:<input type="number" name="product_num">
-      <input type="submit" value="提交">
-    </form>
+    <h2>添加商品</h2>
+    <div id="add">
+      <form action="/seller/add" method="post">
+        商品名:<input type="text" name="product_name">
+        商品价格:<input type="number" name="product_price">
+        商品描述:<input type="text" name="product_description">
+        商品数量:<input type="number" name="product_num">
+        <input type="submit" value="提交">
+      </form>
+    </div>
+
   </body>
 </html>

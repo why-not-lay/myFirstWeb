@@ -24,7 +24,7 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
         if(user != null) {
-            resp.sendRedirect("/");
+            resp.sendRedirect("/index");
             return;
         }
         req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
@@ -42,7 +42,7 @@ public class Login extends HttpServlet {
                 req.setAttribute("user",user);
                 req.getSession().setAttribute("user",user);
 //            req.getRequestDispatcher("jsp/index.jsp").forward(req,resp);
-                resp.sendRedirect("/");
+                resp.sendRedirect("/index");
             } else {
                 req.getRequestDispatcher("/jsp/login.jsp").forward(req,resp);
 
