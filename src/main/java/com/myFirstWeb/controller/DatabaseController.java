@@ -81,7 +81,7 @@ import com.myFirstWeb.bean.*;
 public class DatabaseController {
     private static String JDBC_URL = "jdbc:mysql://localhost:3306/myfirstweb";
     private static String JDBC_USER = "root";
-    private static String JDBC_PASSWORD = "luoYI";
+    private static String JDBC_PASSWORD = "Losorin123,,,";
     private static String JDBC_PATH = "com.mysql.cj.jdbc.Driver";
 
     public static int InsertUser(User user)throws SQLException,ClassNotFoundException  {
