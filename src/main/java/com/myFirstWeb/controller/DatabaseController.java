@@ -135,7 +135,7 @@ public class DatabaseController {
     public static int RemoveTradeRecord(long tid) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
-            try(PreparedStatement ps = conn.prepareStatement("update into records_trade set status=? where tid=?")) {
+            try(PreparedStatement ps = conn.prepareStatement("update records_trade set status=? where tid=?")) {
                 ps.setObject(1, Status.Status_records_trade.DELETED);
                 ps.setObject(2, tid);
                 return ps.executeUpdate();
@@ -978,6 +978,36 @@ public class DatabaseController {
         }
     }
 
+
+    public static ArrayList<Records_trade> GetDateTradeRecords(Date date, long uid) throws SQLException,ClassNotFoundException {
+        Class.forName(JDBC_PATH);
+        try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
+            try(PreparedStatement ps = conn.prepareStatement("select tid, pid, uid_buyer,uid_seller,num,date_trade, cost, status from records_trade where date_trade=date(?) and uid_seller=?")) {
+                ps.setObject(1, date);
+                ps.setObject(2, uid);
+//                ps.setObject(3, page);
+//                ps.setObject(4, num);
+                try(ResultSet rs = ps.executeQuery()) {
+                    ArrayList<Records_trade> trades  = new ArrayList<Records_trade>();
+                    while(rs.next()) {
+                        Records_trade trade = new Records_trade();
+                        trade.setNum(rs.getInt("num"));
+                        trade.setTid(rs.getLong("tid"));
+                        trade.setPid(rs.getLong("pid"));
+                        trade.setUid_buyer(rs.getLong("uid_buyer"));
+                        trade.setUid_seller(rs.getLong("uid_seller"));
+                        trade.setDate_trade(rs.getDate("date_trade"));
+                        trade.setCost(rs.getInt("cost"));
+                        trade.setStatus(rs.getInt("status"));
+                        trades.add(trade);
+                    }
+                    return trades;
+                }
+            }
+        }
+
+    }
+
     public static ArrayList<Records_trade> GetTradeRecordsP(long pid,int num, int page)throws SQLException,ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -1096,4 +1126,5 @@ public class DatabaseController {
         }
 
     }
+
 }

@@ -13,6 +13,7 @@ import javax.servlet.RequestDispatcher;
 
 import java.sql.SQLException;
 
+import com.myFirstWeb.controller.MailController;
 import com.myFirstWeb.controller.UserController;
 import com.myFirstWeb.bean.User;
 

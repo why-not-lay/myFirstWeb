@@ -14,6 +14,9 @@
   Integer page_sum_views = (Integer)request.getAttribute("page_sum_views");
   Integer page_sum_trades= (Integer)request.getAttribute("page_sum_trades");
   Integer page_sum_products= (Integer)request.getAttribute("page_sum_products");
+
+  ArrayList<Records_trade> trades_income = (ArrayList<Records_trade>)request.getAttribute("trades_income");
+  Integer income = (Integer)request.getAttribute("income");
 %>
 <html>
   <head>
@@ -85,6 +88,33 @@
     <%}%>
 
           
+    <h2>今日营业额</h2>
+    <% if(trades_income == null || trades_income.size() == 0){ %>
+    <h2>今日暂无收入</h2>
+    <%} else {%>
+    <table class="products">
+      <tr>
+        <th>订单号</th>
+        <th>商品号</th>
+        <th>交易数量</th>
+        <th>交易额</th>
+      </tr>
+      <%for (int i = 0; i < trades_income.size(); i++){%>
+      <%Records_trade trade = trades_income.get(i);%>
+      <tr>
+        <th><%=trade.getTid()%></th>
+        <th><%=trade.getPid()%></th>
+        <th><%=trade.getNum()%></th>
+        <th><%=trade.getCost()%></th>
+      </tr>
+      <%}%>
+      <tr>
+        <th colspan="2" >今日营业额</th>
+        <th colspan="2" ><%=income%></th>
+      </tr>
+    </table>
+    <%}%>
+
     <h2>浏览商品</h2>
     <% if(products_view == null || products_view.size() == 0){ %>
     <h2>没有浏览过的商品</h2>

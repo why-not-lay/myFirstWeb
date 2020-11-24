@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import java.util.Date;
 
-import com.myFirstWeb.bean.User;
-import com.myFirstWeb.bean.Product;
-import com.myFirstWeb.controller.ProductController;
+import com.myFirstWeb.bean.*;
+import com.myFirstWeb.controller.*;
 
 import java.util.ArrayList;
 public class Seller extends HttpServlet {
@@ -32,6 +32,18 @@ public class Seller extends HttpServlet {
                 Integer page_offshelf = 0;
                 Integer page_soldout = 0;
 
+                if(page_onshlf_str != null) {
+                    page_onshlf = Integer.parseInt(page_onshlf_str);
+                }
+
+                if(page_offshelf_str != null) {
+                    page_offshelf = Integer.parseInt(page_offshelf_str);
+                }
+
+                if(page_soldout_str != null) {
+                    page_soldout = Integer.parseInt(page_soldout_str);
+                }
+
                 Integer sum_onshelf = ProductController.CountSellerOnShelfProducts(user.getId());
                 Integer sum_offshelf = ProductController.CountSellerOffShelfProducts(user.getId());
                 Integer sum_soldout = ProductController.CountSellerSoldOutProducts(user.getId());
@@ -40,11 +52,6 @@ public class Seller extends HttpServlet {
                 ArrayList<Product> products_offshelf = ProductController.GetSellerOffShelfProducts(user.getId(), 10, page_offshelf * 10);
                 ArrayList<Product> products_soldout = ProductController.GetSellerSoldOutProducts(user.getId(), 10, page_soldout * 10);
 
-                if(page_onshlf_str != null && page_offshelf_str != null && page_soldout_str != null) {
-                    page_onshlf = Integer.parseInt(page_onshlf_str);
-                    page_offshelf = Integer.parseInt(page_offshelf_str);
-                    page_soldout = Integer.parseInt(page_soldout_str);
-                }
 
                 req.setAttribute("products_onshelf", products_onshelf);
                 req.setAttribute("products_offshelf", products_offshelf);

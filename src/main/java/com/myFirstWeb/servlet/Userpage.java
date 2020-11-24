@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import java.util.Date;
 
 import com.myFirstWeb.bean.*;
 import com.myFirstWeb.controller.*;
@@ -27,6 +28,7 @@ public class Userpage extends HttpServlet {
 
             if(user == null) {
                 resp.sendRedirect("/login");
+                return;
             }
             int page_products = 0, page_views = 0, page_trades = 0;
             if(page_products_str != null ) {
@@ -39,6 +41,15 @@ public class Userpage extends HttpServlet {
 
             if(page_views_str != null) {
                 page_views = Integer.parseInt(page_views_str);
+            }
+
+            ArrayList<Records_trade> trades_income = OrderController.GetDateTradeRecords(new Date(), user.getId());
+            if(trades_income == null) {
+                System.out.println("trades_income is null");
+            }
+            Integer income = 0;
+            for (Records_trade trade : trades_income) {
+                income += trade.getCost();
             }
 
             ArrayList<Product> products = ProductController.GetSellerOnShelfProducts(user.getId(), 10, page_products);
@@ -60,6 +71,9 @@ public class Userpage extends HttpServlet {
             req.setAttribute("trades", trades);
             req.setAttribute("products_trade", products_trade);
             req.setAttribute("page_sum_trades", page_sum_trades);
+            req.setAttribute("trades_income", trades_income);
+            req.setAttribute("income",(Integer)income);
+
             req.getRequestDispatcher("/jsp/user.jsp").forward(req, resp);
 
         } catch (Exception e) {

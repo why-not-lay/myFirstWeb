@@ -110,6 +110,10 @@ public class OrderController {
         return DatabaseController.GetTradeRecords(uid, Status.Status_records_trade.USED, num, page);
     }
 
+    public static ArrayList<Records_trade> GetDateTradeRecords(Date date,long uid) throws SQLException, ClassNotFoundException {
+        return DatabaseController.GetDateTradeRecords(date,  uid);
+    }
+
     public static ArrayList<Product> GetTradeRecordProducts(long uid, int num, int page)throws SQLException, ClassNotFoundException {
         return DatabaseController.GetTradeRecordProducts(uid, Status.Status_records_trade.USED, num, page);
     }

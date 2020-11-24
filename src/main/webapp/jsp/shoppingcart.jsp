@@ -23,6 +23,7 @@ Integer sum_not_enough = (Integer)request.getAttribute("sum_not_enough");
     <link rel="stylesheet" href="/css/topbar.css">
   </head>
   <body>
+
     <div id="topbar">
       <div>
         <ul>
@@ -32,7 +33,7 @@ Integer sum_not_enough = (Integer)request.getAttribute("sum_not_enough");
     <li><a href="/index" >主页</a></li>
     <li><a href="/seller" >我要卖</a></li>
     <li><a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a></li>
-    <li><a href="/logout" >登出</li>
+    <li><a href="/logout" >登出</a></li>
     <%}%>
         </ul>
       </div>
@@ -65,6 +66,7 @@ Integer sum_not_enough = (Integer)request.getAttribute("sum_not_enough");
       </tr>
         <%}%>
     </table>
+
     <div class="page">
       <ul>
         <% if(sum_used == null){ %>

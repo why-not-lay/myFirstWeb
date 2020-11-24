@@ -13,6 +13,7 @@ import javax.servlet.RequestDispatcher;
 
 import java.sql.SQLException;
 
+import com.myFirstWeb.controller.MailController;
 import com.myFirstWeb.controller.UserController;
 import com.myFirstWeb.bean.User;
 import java.util.List;
@@ -41,7 +42,6 @@ public class Login extends HttpServlet {
                 User user = UserController.Search(username);
                 req.setAttribute("user",user);
                 req.getSession().setAttribute("user",user);
-//            req.getRequestDispatcher("jsp/index.jsp").forward(req,resp);
                 resp.sendRedirect("/index");
             } else {
                 req.getRequestDispatcher("/jsp/login.jsp").forward(req,resp);

@@ -62,6 +62,9 @@ public class ConfirmBuy extends HttpServlet {
             for (Records_shopping_cart shopping : shoppings) {
                 OrderController.RemoveShoppingCartRecord(shopping.getSid());
             }
+
+            String content = "你已经成功支付" + cost_price + "元,感谢你对本平台的支持,希望你过得愉快!";
+            MailController.SendMail(user.getEmail(), "订单已成功支付", content);
             req.getRequestDispatcher("/jsp/pay.jsp").forward(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
