@@ -151,7 +151,7 @@
           <th><input type="text" name="product_description" value="<%=product.getDescription()%>"></th>
           <th><input type="number" name="product_price" value="<%=product.getPrice()%>"></th>
           <th><input type="number" name="product_num" value="<%=product.getNum()%>"></th>
-          <th class="func"><a href="/seller/offshelf?pid=<%=product.getId()%>">下架</a></th>
+          <th class="func"><a href="/seller/onshelf?pid=<%=product.getId()%>">上架</a></th>
           <th class="func"><a href="/item?pid=<%=product.getId()%>">商品页</a></th>
           <th class="func"><a href="/seller/remove?uid=<%=user.getId()%>&pid=<%=product.getId()%>">删除</a></th>
           <th><input type="submit" value="修改"></th>

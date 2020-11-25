@@ -26,25 +26,35 @@ public class OnShelf extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
         String pid_str = req.getParameter("pid");
+        //判断当前用户是否已经登录
         if(user == null) {
+            //未登录跳转至登录页面
             resp.sendRedirect("/login");
             return;
         }
-
+        //如果要上架商品的id为空，则跳转
         if(pid_str == null) {
-            resp.sendRedirect("/seller");
+            req.getSession().setAttribute("error", "参数提交有误");
+            resp.sendRedirect("/error");
             return;
         }
 
         long pid = Long.parseLong(pid_str);
         try {
             Product product = ProductController.SearchProduct(pid);
+            //判断是否有该商品
             if(product == null) {
-                resp.sendRedirect("/index");;
+                req.getSession().setAttribute("error", "没有该商品");
+                resp.sendRedirect("/error");;
+                return;
             }
+            //判断用户id和商品所有者id是否匹配
             if(product.getUid() != user.getId()) {
-                resp.sendRedirect("/index");
+                req.getSession().setAttribute("error", "无上架权限");
+                resp.sendRedirect("/error");
+                return;
             }
+            //上架商品
             ProductController.OnShelfProduct(pid);
         } catch (Exception e) {
             e.printStackTrace();

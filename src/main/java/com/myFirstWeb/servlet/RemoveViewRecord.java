@@ -19,17 +19,22 @@ public class RemoveViewRecord extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
+        //判断当前用户是否已经登录
         if(user == null) {
+            //未登录跳转至登录页面
             resp.sendRedirect("/login");
             return;
         }
         try {
             String vid_str = req.getParameter("vid");
+            //判断是否有该条浏览记录
             if(vid_str == null) {
-                resp.sendRedirect("/user");
+                req.getSession().setAttribute("error", "无该条购买记录");
+                resp.sendRedirect("/error");
                 return;
             }
             long vid = Long.parseLong(vid_str);
+            //删除浏览记录
             OrderController.RemoveViewRecord(vid);
             resp.sendRedirect("/user");
 

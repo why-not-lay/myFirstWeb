@@ -24,7 +24,9 @@ public class UpdateShoppingNum extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
+        //判断当前用户是否已经登录
         if(user == null) {
+            //未登录跳转至登录页面
             resp.sendRedirect("/login");
             return;
         }

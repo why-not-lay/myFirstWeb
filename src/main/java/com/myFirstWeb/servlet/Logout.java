@@ -21,6 +21,9 @@ public class Logout extends HttpServlet {
         List<?> list = (List<?>)req.getSession().getAttribute("products_buy");
         List<?> list_shopping = (List<?>)req.getSession().getAttribute("shoppings");
         Integer cost_price = (Integer)req.getSession().getAttribute("cost_price");
+        String error = (String)req.getSession().getAttribute("error");
+
+        //登出之前清空session中的所有内容
         if(list != null) {
             req.getSession().removeAttribute("products_buy");
         }
@@ -30,6 +33,10 @@ public class Logout extends HttpServlet {
         if(cost_price != null) {
             req.getSession().removeAttribute("cost_price");
         }
+        if(error != null) {
+            req.getSession().removeAttribute("error");
+        }
+
 
         if(user != null) {
             req.getSession().removeAttribute("user");

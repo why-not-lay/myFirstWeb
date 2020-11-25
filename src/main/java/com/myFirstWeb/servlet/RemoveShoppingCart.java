@@ -19,17 +19,22 @@ public class RemoveShoppingCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
+        //判断当前用户是否已经登录
         if(user == null) {
+            //未登录跳转至登录页面
             resp.sendRedirect("/login");
             return;
         }
         try {
             String sid_str = req.getParameter("sid");
+            //判断是否有当前购物车记录
             if(sid_str == null) {
-                resp.sendRedirect("/shoppingcart");
+                req.getSession().setAttribute("error", "无该条购物车记录");
+                resp.sendRedirect("/error");
                 return;
             }
             long sid = Long.parseLong(sid_str);
+            //删除购物车
             OrderController.RemoveShoppingCartRecord(sid);
             resp.sendRedirect("/shoppingcart");
         } catch (Exception e) {

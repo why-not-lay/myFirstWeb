@@ -19,15 +19,19 @@ public class Buy extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
+        //判断当前用户是否已经登录
         if(user == null) {
+            //未登录跳转至登录页面
             resp.sendRedirect("/login");
             return;
         }
         try {
+            //获取单条要清空的购物车id
             String sid_str = req.getParameter("sid");
             int sid = -1;
             ArrayList<Records_shopping_cart> shoppings = null;
 
+            //如果单条购物车id为空，则默认清空整个购物车
             if(sid_str != null) {
                 sid = Integer.parseInt(sid_str);
                 shoppings = new ArrayList<Records_shopping_cart>();
@@ -35,17 +39,21 @@ public class Buy extends HttpServlet {
                 if(shopping != null) {
                     shoppings.add(shopping);
                 }
+
             } else {
                 shoppings = OrderController.GetSelected(user.getId());
             }
 
+            //如果购物车本来就已经是空的,重定向
             if(shoppings.size() == 0) {
-                resp.sendRedirect("/shoppingcart");
+                req.getSession().setAttribute("error", "购物车为空");
+                resp.sendRedirect("/error");
                 return;
             }
 
             ArrayList<Product> products = new ArrayList<Product>();
             int cost_price = 0;
+            //根据购物车记录中的pid获取商品的各项具体信息
             for (Records_shopping_cart shopping : shoppings) {
                 Product product = ProductController.SearchProduct(shopping.getPid());
                 if(product != null) {
@@ -54,6 +62,8 @@ public class Buy extends HttpServlet {
                     products.add(product);
                 }
             }
+
+            //保存购物车的记录
             req.getSession().setAttribute("products_buy", products);
             req.getSession().setAttribute("shoppings", shoppings);
             req.getSession().setAttribute("cost_price",(Integer)cost_price);

@@ -25,6 +25,7 @@ public class OrderController {
     public static int InsertShoppingCartRecord(long uid, long pid,int num)throws SQLException, ClassNotFoundException {
         Records_shopping_cart shopping = null;
         ArrayList<Records_shopping_cart> shoppings = DatabaseController.GetShoppingCartRecords(uid, pid, Status.Status_records_shopping_cart.USED);
+        //在插入购物车记录前，如果已经存在就在原购物车里修改数量
         if(shoppings.size()==1) {
             shopping = shoppings.get(0);
             int flag = UpdateShoppingNum(shopping.getSid(), num + shopping.getNum());
@@ -36,6 +37,7 @@ public class OrderController {
         if(product == null) {
             return Status.Status_situation.NOT_EXIST;
         }
+        //如果插入的数量比商品售卖的数量还多就设置为最大值
         if(product.getNum() < num) {
             num = product.getNum();
         }
@@ -150,8 +152,6 @@ public class OrderController {
     public static int CountTradeRecordsP(long pid)throws SQLException,ClassNotFoundException {
         return DatabaseController.CountTradeRecordsP(pid, Status.Status_records_trade.USED) + DatabaseController.CountTradeRecordsP(pid, Status.Status_records_trade.DELETED);
     }
-
-    // 统计:  <22-11-20, yourname> //
 
     public static ArrayList<Records_shopping_cart> GetSelected(long uid) throws SQLException,ClassNotFoundException  {
         return DatabaseController.GetShoppingCartRecordsU(uid, Status.Status_records_shopping_cart.USED);

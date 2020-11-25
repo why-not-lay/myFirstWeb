@@ -19,16 +19,16 @@ import java.util.ArrayList;
 public class Index extends HttpServlet {
     private void index(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException {
         try {
-            User user = (User)req.getSession().getAttribute("user");
-            String str_page = req.getParameter("page");
-            if(user != null) {
-                req.setAttribute("user",user);
-            }
+//            User user = (User)req.getSession().getAttribute("user");
+            String str_page = req.getParameter("page"); //用于获取用户的页数
+
             int page = 0;
             Integer all = ProductController.CountProducts();
             if(str_page != null) {
                 page = Integer.parseInt(str_page);
             }
+
+            //根据页数来获取指定数量的商品
             ArrayList<Product> products = ProductController.GetProducts(10,page * 10);
             req.setAttribute("products",products);
             req.setAttribute("all",all);

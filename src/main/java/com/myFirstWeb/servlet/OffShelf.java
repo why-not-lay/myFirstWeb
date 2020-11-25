@@ -25,11 +25,13 @@ public class OffShelf extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
         String pid_str = req.getParameter("pid");
+        //判断当前用户是否已经登录
         if(user == null) {
+            //未登录跳转至登录页面
             resp.sendRedirect("/login");
             return;
         }
-
+        //判断要下架商品的id是否为空
         if(pid_str == null) {
             resp.sendRedirect("/seller");
             return;
@@ -38,12 +40,19 @@ public class OffShelf extends HttpServlet {
         long pid = Long.parseLong(pid_str);
         try {
             Product product = ProductController.SearchProduct(pid);
+            //如果没有该商品，下架失败
             if(product == null) {
-                resp.sendRedirect("/index");;
+                req.getSession().setAttribute("error", "无该商品");
+                resp.sendRedirect("/error");;
+                return;
             }
+            //如果商品的所有者id与用户登录的id不同，则下架失败
             if(product.getUid() != user.getId()) {
-                resp.sendRedirect("/index");
+                req.getSession().setAttribute("error", "无下架权限");
+                resp.sendRedirect("/error");
+                return;
             }
+            //下架商品
             ProductController.OffShelfProduct(pid);
             resp.sendRedirect("/seller");
         } catch (Exception e) {

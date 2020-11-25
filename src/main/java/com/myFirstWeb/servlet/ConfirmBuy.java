@@ -20,12 +20,16 @@ public class ConfirmBuy extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
+        //判断当前用户是否已经登录
         if(user == null) {
+            //未登录跳转至登录页面
             resp.sendRedirect("/login");
             return;
         }
         try {
+            //获取delete flag ，该flag用于判断是否要取消订单
             String delete_str = req.getParameter("delete");
+            //delete flag不为空，则取消订单
             if(delete_str != null) {
                 req.getSession().removeAttribute("products_buy");
                 req.getSession().removeAttribute("cost_price");
@@ -43,26 +47,34 @@ public class ConfirmBuy extends HttpServlet {
             for(Object obj: list_shopping) {
                 shoppings.add((Records_shopping_cart)obj);
             }
+
+            //获取订单信息，即之前要清空的购物车信息
             Integer cost_price = (Integer)req.getSession().getAttribute("cost_price");
             req.getSession().removeAttribute("products_buy");
             req.getSession().removeAttribute("cost_price");
             req.getSession().removeAttribute("shoppings");
 
+
             if(cost_price == null) {
-                resp.sendRedirect("/index");
+                req.getSession().setAttribute("error", "订单有误");
+                resp.sendRedirect("/error");
                 return;
             }
             for (Product product : products_buy) {
+                //结算订单同时插入交易记录
                 int flag = OrderController.InsertTradeRecord(user.getId(), product.getId(), product.getNum());
                 if(flag == 0) {
-                    resp.sendRedirect("/shoppingcart");
+                    req.getSession().setAttribute("error", "订单有误");
+                    resp.sendRedirect("/error");
                     return;
                 }
             }
+            //在订单成功结算后删除要清空的购物车记录
             for (Records_shopping_cart shopping : shoppings) {
                 OrderController.RemoveShoppingCartRecord(shopping.getSid());
             }
 
+            //发送邮件告知
             String content = "你已经成功支付" + cost_price + "元,感谢你对本平台的支持,希望你过得愉快!";
             MailController.SendMail(user.getEmail(), "订单已成功支付", content);
             req.getRequestDispatcher("/jsp/pay.jsp").forward(req, resp);

@@ -19,10 +19,10 @@
           <li><a href="/index" >主页</a></li>
           <li><a href="/user?uid=<%=user.getId()%>" ><%=user.getName()%></a></li>
           <li><a href="/shoppingcart" >购物车</a></li>
-          <li><a href="/logout" >Logout</a></li>
+          <li><a href="/logout" >登出</a></li>
     <% }else {%>
-          <li><a href="/login" >login</a></li>
-          <li><a href="/signin" >signin</a></li>
+          <li><a href="/login" >登录</a></li>
+          <li><a href="/signin" >注册</a></li>
     <% } %>
         </ul>
       </div>

@@ -18,21 +18,23 @@ import com.myFirstWeb.controller.UserController;
 import com.myFirstWeb.bean.User;
 
 public class SignIn extends HttpServlet {
-//    private UserController user = new UserController();
     protected void doPost(HttpServletRequest request, HttpServletResponse response )throws ServletException, IOException{
         try {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String email = request.getParameter("email");
-            if(username != null && password != null) {
+            if( username != null && password != null && email != null && username.length()!=0 && password.length() != 0  && email.length() != 0) {
+                //创建用户
                 User user = new User(username,password);
                 user.setEmail(email);
                 UserController.Insert(user);
                 request.getSession().setAttribute("user",user);
                 request.setAttribute("user",user);
+                response.sendRedirect("/index");
+            } else {
+                request.getSession().setAttribute("error", "注册失败");
+                response.sendRedirect("/error");
             }
-//        request.getRequestDispatcher("jsp/index.jsp").forward(request,response);
-            response.sendRedirect("/index");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,9 +44,8 @@ public class SignIn extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
+        //判断当前用户是否已经登录
         if(user != null) {
-//            req.setAttribute("user",user);
-//            req.getRequestDispatcher("jsp/index.jsp").forward(req, resp);
             resp.sendRedirect("/index");
         } else {
             req.getRequestDispatcher("/jsp/signin.jsp").forward(req,resp);

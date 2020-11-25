@@ -25,11 +25,14 @@ public class ShoppingCart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
+        //判断当前用户是否已经登录
         if(user == null) {
+            //未登录跳转至登录页面
             resp.sendRedirect("/login");
             return;
         }
 
+        //分别获取可选购物车页数，已下架购物车页数和商品不足的购物车页数
         String page_used_str = req.getParameter("page_used");
         String page_offshelf_str = req.getParameter("page_offshelf");
         String page_not_enough_str = req.getParameter("page_not_enought");
@@ -46,15 +49,17 @@ public class ShoppingCart extends HttpServlet {
         }
 
         try {
+            //根据页数获取可选购物车记录，已下架购物车记录和商品不足的购物车记录
             ArrayList<Records_shopping_cart> shoppings_used = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.USED,10,page_used*10 );
             ArrayList<Records_shopping_cart> shoppings_offshelf = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.OFF_SHLEF,10,page_offshelf* 10 );
             ArrayList<Records_shopping_cart> shoppings_not_enough = OrderController.GetShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.NOT_ENOUGH,10,page_not_enough*10 );
 
-
+            //分别根据页数获取可选，已下架和商品不足购物车的对应商品
             ArrayList<Product> products_used = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.USED,10, page_used*10);
             ArrayList<Product> products_offshelf = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.OFF_SHLEF,10,page_offshelf*10);
             ArrayList<Product> products_not_enough = OrderController.GetShoppingCartProducts(user.getId(), Status.Status_records_shopping_cart.NOT_ENOUGH,10, page_not_enough*10);
 
+            //分别获取可选购物车总记录，已下架购物车总记录和商品不足的购物车记录
             Integer sum_used = OrderController.CountShoppingCartRecords(user.getId(), Status.Status_records_shopping_cart.USED);
             Integer sum_offshelf = OrderController.CountShoppingCartRecords(user.getId(),Status.Status_records_shopping_cart.OFF_SHLEF);
             Integer sum_not_enough = OrderController.CountShoppingCartRecords(user.getId(),Status.Status_records_shopping_cart.NOT_ENOUGH);

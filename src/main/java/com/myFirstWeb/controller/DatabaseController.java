@@ -82,8 +82,10 @@ public class DatabaseController {
     private static String JDBC_URL = "jdbc:mysql://localhost:3306/myfirstweb";
     private static String JDBC_USER = "root";
     private static String JDBC_PASSWORD = "Losorin123,,,";
+//    private static String JDBC_PASSWORD = "luoYI";
     private static String JDBC_PATH = "com.mysql.cj.jdbc.Driver";
 
+    //插入用户
     public static int InsertUser(User user)throws SQLException,ClassNotFoundException  {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -111,6 +113,7 @@ public class DatabaseController {
         }
     }
 
+    //插入商品
     public static void InsertProduct( Product product) throws SQLException,ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -128,10 +131,10 @@ public class DatabaseController {
                     }
                 }
             }
-
         }
     }
 
+    //删除交易记录
     public static int RemoveTradeRecord(long tid) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -147,9 +150,9 @@ public class DatabaseController {
             e.printStackTrace();
             return Status.Status_Database.CONN_FAILED;
         }
-
     }
 
+    //插入交易记录
     public static int InsertTradeRecord(Records_trade trade) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -172,6 +175,7 @@ public class DatabaseController {
         }
     }
 
+    //更新商品信息
     public static int UpdateProduct(Product product) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -182,7 +186,6 @@ public class DatabaseController {
                 ps.setObject(4,product.getNum());
                 ps.setObject(5, product.getStatus());
                 ps.setObject(6, product.getId());
-
                 return ps.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -194,13 +197,13 @@ public class DatabaseController {
         }
     }
 
+    //删除商品
     public static int RemoveProduct(long pid)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
             try(PreparedStatement ps = conn.prepareStatement("update products set status=? where pid=?")) {
                 ps.setObject(1, Status.Status_products.DELETED);
                 ps.setObject(2, pid);
-
                 return ps.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -210,9 +213,9 @@ public class DatabaseController {
             e.printStackTrace();
             return Status.Status_Database.CONN_FAILED;
         }
-
     }
 
+    //插入浏览记录
     public static int InsertViewRecord(Records_view view) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -221,9 +224,7 @@ public class DatabaseController {
                 ps.setObject(2, view.getPid());
                 ps.setObject(3, view.getDate());
                 ps.setObject(4, view.getStatus());
-
                 return ps.executeUpdate();
-
             } catch (Exception e) {
                 e.printStackTrace();
                 return Status.Status_Database.SYNAX_ERROR;
@@ -232,9 +233,9 @@ public class DatabaseController {
             e.printStackTrace();
             return Status.Status_Database.CONN_FAILED;
         }
-
     }
 
+    //删除浏览记录
     public static int RemoveViewRecord(long vid) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -250,12 +251,9 @@ public class DatabaseController {
             e.printStackTrace();
             return Status.Status_Database.CONN_FAILED;
         }
-
     }
 
-
-
-
+    //根据用户名获取用户
     public static User SearchUser(String username) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -274,11 +272,11 @@ public class DatabaseController {
                     }
                     return user;
                 }
-
             }
-
         }
     }
+
+    //根据用户id获取用户
     public static User SearchUser(long uid) throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -297,12 +295,11 @@ public class DatabaseController {
                     }
                     return user;
                 }
-
             }
-
         }
     }
 
+    //根据商品id获取商品
     public static Product SearchProduct(long pid)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -326,6 +323,7 @@ public class DatabaseController {
         }
     }
 
+    //根据搜索内容和商品状态获取商品列表
     public static ArrayList<Product> SearchProduct(String content, int status)throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -350,9 +348,9 @@ public class DatabaseController {
                 }
             }
         }
-
     }
 
+    //根据指定页数和数量来获取售卖的商品信息
     public static ArrayList<Product> GetSellerProducts(long uid, int status,int num, int page)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -372,7 +370,6 @@ public class DatabaseController {
                         product.setPrice(rs.getInt("price"));
                         product.setNum(rs.getInt("num"));
                         product.setStatus(rs.getInt("status"));
-
                         products.add(product);
                     }
                     return products;
@@ -381,6 +378,7 @@ public class DatabaseController {
         }
     }
 
+    //根据pid获取商品
     public static Product GetProduct(long pid) throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -402,9 +400,9 @@ public class DatabaseController {
                 }
             }
         }
-
     }
 
+    //根据状态来获取商品
     public static ArrayList<Product> GetProducts(int status, int num, int page)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -423,7 +421,6 @@ public class DatabaseController {
                         product.setPrice(rs.getInt("price"));
                         product.setNum(rs.getInt("num"));
                         product.setStatus(rs.getInt("status"));
-
                         products.add(product);
                     }
                     return products;
@@ -432,6 +429,7 @@ public class DatabaseController {
         }
     }
 
+    //根据指定页数和数量来获取浏览记录
     public static ArrayList<Product> GetViewRecordProducts(long uid,int status, int num, int page)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -451,7 +449,6 @@ public class DatabaseController {
                         product.setPrice(rs.getInt("price"));
                         product.setNum(rs.getInt("num"));
                         product.setStatus(rs.getInt("products.status"));
-
                         products.add(product);
                     }
                     return products;
@@ -460,7 +457,7 @@ public class DatabaseController {
         }
     }
 
-
+    //根据指定页数和数量，状态来获取购车车记录
     public static ArrayList<Product> GetShoppingCartRecordProducts(long uid,int status, int num, int page)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
@@ -488,7 +485,7 @@ public class DatabaseController {
         }
     }
 
-
+    //根据指定页数、数量和id来获取交易商品
     public static ArrayList<Product> GetTradeRecordProductsP(long pid, int num, int page)throws SQLException,ClassNotFoundException{
         Class.forName(JDBC_PATH);
         try(Connection conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD)) {
