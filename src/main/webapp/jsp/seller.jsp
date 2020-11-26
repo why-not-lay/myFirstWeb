@@ -14,6 +14,14 @@
     Integer sum_offshelf = (Integer)request.getAttribute("sum_offshelf");
     Integer sum_soldout = (Integer)request.getAttribute("sum_soldout");
 
+    Integer sum_trades = (Integer)request.getAttribute("sum_trades");
+    Integer sum_views = (Integer)request.getAttribute("sum_views");
+
+    ArrayList<Records_view> views = (ArrayList<Records_view>)request.getAttribute("views");
+    ArrayList<Records_trade> trades = (ArrayList<Records_trade>)request.getAttribute("trades");
+
+    ArrayList<String> users_view = (ArrayList<String>)request.getAttribute("users_view");
+    ArrayList<String> users_trade = (ArrayList<String>)request.getAttribute("users_trade");
   %>
   <head>
     <link rel="stylesheet" href="/css/product.css">
@@ -173,7 +181,6 @@
     </div>
     <%}%>
 
-
     <h2>添加商品</h2>
     <div id="add">
       <form action="/seller/add" method="post">
@@ -184,6 +191,83 @@
         <input type="submit" value="提交">
       </form>
     </div>
+
+    <h2>浏览记录</h2>
+    <% if(users_view == null || users_view.size() == 0){ %>
+    <h2>当前没有浏览记录</h2>
+    <%} else {%>
+    <table class="products">
+      <tr>
+        <th>客户名</th>
+        <th>商品id</th>
+        <th>日期</th>
+        <th>功能</th>
+      </tr>
+      <%for (int i = 0; i < users_view.size(); i++){%>
+      <%Records_view view = views.get(i);%>
+      <%String name = users_view.get(i);%>
+      <tr>
+        <th><%=name%></th>
+        <th><%=view.getPid()%></th>
+        <th><%=view.getDate()%></th>
+        <th class="func"><a href="/item?pid=<%=view.getPid()%>">商品页</a></th>
+      </tr>
+      <%}%>
+    </table>
+    <div class="page">
+      <ul>
+      <% if(sum_views == null){ %>
+      <li><a href="/seller?uid=<%=user.getId()%>&page_view=0" >1</a></li>
+      <%} else {%>
+        <% int all_page = sum_views/10; %>
+        <%for (int i = 0; i <= all_page; i++){%>
+      <li><a href="/seller?uid=<%=user.getId()%>&page_view=<%=i%>" ><%=i+1%></a></li>
+        <%}%>
+      <%}%>
+      </ul>
+    </div>
+    <%}%>
+
+
+    <h2>购买记录</h2>
+    <% if(users_trade == null || users_trade.size() == 0){ %>
+    <h2>当前没有购买记录</h2>
+    <%} else {%>
+    <table class="products">
+      <tr>
+        <th>客户名</th>
+        <th>商品id</th>
+        <th>日期</th>
+        <th>功能</th>
+      </tr>
+      <%for (int i = 0; i < users_trade.size(); i++){%>
+      <%Records_trade trade = trades.get(i);%>
+      <%String name = users_trade.get(i);%>
+      <tr>
+        <th><%=name%></th>
+        <th><%=trade.getPid()%></th>
+        <th><%=trade.getDate_trade()%></th>
+        <th class="func"><a href="/item?pid=<%=trade.getPid()%>">商品页</a></th>
+      </tr>
+      <%}%>
+    </table>
+    <div class="page">
+      <ul>
+      <% if(sum_trades == null){ %>
+      <li><a href="/seller?uid=<%=user.getId()%>&page_trade=0" >1</a></li>
+      <%} else {%>
+        <% int all_page = sum_trades/10; %>
+        <%for (int i = 0; i <= all_page; i++){%>
+      <li><a href="/seller?uid=<%=user.getId()%>&page_trade=<%=i%>" ><%=i+1%></a></li>
+        <%}%>
+      <%}%>
+      </ul>
+    </div>
+    <%}%>
+
+
+
+
 
   </body>
 </html>

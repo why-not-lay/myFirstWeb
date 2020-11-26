@@ -1,6 +1,6 @@
 package com.myFirstWeb.controller;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Date;
 import com.myFirstWeb.bean.*;
 import java.sql.SQLException;
@@ -50,4 +50,12 @@ public class UserController {
         return Status.Status_situation.SUCCESSFUL;
     }
 
+    public static ArrayList<String> GetSellerViewRecordUsers(long uid, int num, int page)throws SQLException, ClassNotFoundException {
+        return DatabaseController.GetSellerViewRecordUsers(uid, num, page);
+    }
+
+
+    public static ArrayList<String> GetSellerTradeRecordUsers(long uid, int num, int page)throws SQLException, ClassNotFoundException {
+        return DatabaseController.GetSellerTradeRecordUsers(uid, num, page);
+    }
 }
