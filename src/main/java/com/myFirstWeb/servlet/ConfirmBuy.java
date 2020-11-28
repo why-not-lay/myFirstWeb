@@ -80,6 +80,7 @@ public class ConfirmBuy extends HttpServlet {
             req.getRequestDispatcher("/jsp/pay.jsp").forward(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
+            req.getRequestDispatcher("/jsp/pay.jsp").forward(req, resp);
         }
     }
     @Override

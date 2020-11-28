@@ -10,9 +10,14 @@ public class MailController {
     public static void SendMail(String mail_other, String title, String content) {
         //设置服务器参数
         Properties props = new Properties();
-        props.setProperty("mail.host", "smtp.163.com");
-        props.setProperty("mail.transport.protocol", "SMTP");
+//        props.setProperty("mail.host", "smtp.163.com");
+//        props.setProperty("mail.transport.protocol", "SMTP");
+        props.setProperty("mail.smtp.host", "smtp.163.com");
+        props.setProperty("mail.smtp.socketFactory.port", "465");
+        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.setProperty("mail.smtp.auth", "true");
+        props.setProperty("mail.smtp.port", "465");
+
 
         Authenticator authenticator = new Authenticator() {
             @Override
